@@ -20,7 +20,7 @@ type User struct {
 var U User
 
 //注册
-func RegisterPost(user User) (bool, error) {
+func Register(user User) (bool, error) {
 	sql :="insert into tbl_user(user_key,Name,id_number,phone_number,Password) values(?,?,?,?,?)"
 	res, err := db.Exec(sql,user.PublicKey,user.Name,user.IdNum,user.PhoneNum,user.Password)
 	util.CheckErr(err)
@@ -30,20 +30,19 @@ func RegisterPost(user User) (bool, error) {
 }
 
 //登录
-func LoginPost(user User)(*User, error){
-	sql :="select user_key,name,password from tbl_user where name=? and password=?"
-	err := db.QueryRow(sql,user.Name,user.Password).Scan(&user.PublicKey,&user.Name,&user.Password)
+func CheckLogin(user User)(int, error){
+	sql :="select ifnull(count(*),0) as count from tbl_user where name=? and password=?"
+	var count int
+	err := db.QueryRow(sql,user.Name,user.Password).Scan(&count)
 	util.CheckErr(err)
-	return &user, err
+	return count, err
 }
 
-//获取当前user表中数据条目数
-func GetUserCount() (int,error) {
-	sql :="select ifnull(count(*),0) as count from tbl_user"
-	var count int
-	err := db.QueryRow(sql).Scan(&count)
+func Login(user User)(*User, error){
+	sql :="select user_key from tbl_user where name=? and password=?"
+	err := db.QueryRow(sql,user.Name,user.Password).Scan(&user.PublicKey)
 	util.CheckErr(err)
-	return count,err
+	return &user, err
 }
 
 func GetAllUser() error {
