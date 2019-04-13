@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>医疗系统</title>
+</head>
+<body>
+<div>
+    <nav id="top" style="background:url('../../File/bg1.jpg') no-repeat center fixed;background-size:100% 100%" >
+        <div class="container">
+            <div class="row" style="background-color: black">
+                <div class="col-md-3" style="margin-top: 10px;">
+                    <span style="font-size:20px;color:ghostwhite;text-shadow: 5px 5px 5px #affff3;"><strong>区块链医疗系统</strong></span>
+                </div>
+
+                <div class="col-md-5 col-md-offset-4">
+                    <ul class="nav navbar-nav"  style="float:right">
+                        <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                        <li><a href="/register"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <nav id="dhl" class="navbar navbar-default navbar-static-top" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="~/Home/Index">首页</a>
+                    </div>
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="~/Home/ContactUs">联系我们</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col-lg-3">
+        <ul class="list-group" id="ueserfunction">
+            <li class="list-group-item">
+                <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="~/File/Images/@path" />
+            </li>
+            <li class="list-group-item"><a href="/user/illcase">就诊病历</a></li>
+            <li class="list-group-item"><a href="/user/editInfo">修改信息</a></li>
+            <li class="list-group-item"><a href="/user/editPassword">修改密码</a></li>
+            <li class="list-group-item"><a href="/user/visitRecord">病历访问记录</a></li>
+            <li class="list-group-item"><a href="">申请授权</a></li>
+        </ul>
+    </div>
+    <div class="col-md-6 col-md-offset-3">
+        <div class="form-horizontal" style="width: 80%;">
+            <form>
+            <div class="form-group" >
+                <label for="username"><span>姓名</span></label>
+                <div><label class="form-control" id="username" style="width:300px;float: left "><span></span></label></div>
+                <div><span style="color:red;float: left;margin-left: 10px;">*</span></div>
+            </div>
+            <div class="form-group">
+                <label>性别:</label>
+                <div>
+                <div class="radio" style="float: left">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> 男
+                    </label>
+                </div>
+                <div class="radio" style="float: left;margin-left: 50px;">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> 女
+                    </label>
+                </div>
+                    </div>
+                <span style="color:red; margin-left: 10px;margin-top: 5px;">*</span>
+            </div>
+            <div class="form-group">
+                <label for="tel">电话号码:</label>
+                <input type="tel" name="tel" id="tel" class="form-control" style="width:300px">
+            </div>
+            <div class="form-group">
+                <label for="img">头像:</label>
+                <input type="file" name="file" id="img" >
+                <label class="form-control" style="width:300px"><span></span></label>
+            </div>
+            <div class="form-group">
+                <label for="birthdata">出生日期:</label>
+                <input type="date" name="birthdata" id="birthdata" class="form-control" style="width:300px">
+            </div>
+            <div class="form-group">
+                <label for="loaction">地址:</label>
+                <input name="loaction" id="loaction" class="form-control" value="" style="width:300px">
+            </div>
+            <div class="form-group" style="float: left;margin-left: 50px;">
+                <input type="submit" class="btn btn-primary" value="提交">
+            </div>
+            <div class="form-group" style="float: left;margin-left: 50px;">
+                <input type="reset" class="btn btn-primary" value="重置">
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    $(function(){
+        var date_now = new Date();
+        var year = date_now.getFullYear();
+        var month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
+        var date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
+        $("#birthdata").attr("max",year+"-"+month+"-"+date);
+    })
+</script>
+</html>
