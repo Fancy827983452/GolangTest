@@ -43,13 +43,13 @@ func LoginPost(ctx iris.Context) {
 			msg.Message="登陆成功！"
 
 			//创建唯一的Session ID
-			sess := sessions.New(sessions.Config{Cookie: "mysession_cookie_name"})
+			var sess *sessions.Sessions
+			sess= sessions.New(sessions.Config{Cookie: "mysession_cookie_name"})
 			session:=sess.Start(ctx)
 			session.Set("PublicKey",user.PublicKey)//session传参
 			session.Set("Name",user.Name)
 			session.Set("CurrentUser",user)//存储当前用户的信息
 
-			ctx.ReadJSON(&u) //把 json 类型请求参数 转成结构体
 			ctx.HTML("<script>alert('"+msg.Message+"');" +
 				"window.location.href='user/editInfo/"+u.Name+"';</script>")//URL传参
 		}

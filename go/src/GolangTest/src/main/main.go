@@ -4,7 +4,16 @@ import (
 	"github.com/kataras/iris"
 	"controller"
 	"model"
+	"util"
 )
+
+var globalSessions *util.Manager
+
+func init() {
+	globalSessions, err := util.NewSessionManager("memory", "goSessionid", 3600)
+	util.CheckErr(err)
+	go globalSessions.GC()
+}
 
 func main() {
 	app := iris.New()

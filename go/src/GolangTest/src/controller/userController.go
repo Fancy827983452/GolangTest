@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/sessions"
+	"util"
 )
 
 func EditInfo(ctx iris.Context) {
@@ -11,7 +12,7 @@ func EditInfo(ctx iris.Context) {
 
 	sess := sessions.New(sessions.Config{Cookie: "mysession_cookie_name"})
 	session:=sess.Start(ctx)
-	currentUser:=session.Get("currentUser")
+	currentUser:=util.ParseJson(session.Get("CurrentUser"))//json格式的数据
 	ctx.ViewData("currentUser",currentUser)
 
 	//把获得的动态数据username 绑定在 ./src/views/user/UserEditInfo.html模板 语法 {{ .username }}
