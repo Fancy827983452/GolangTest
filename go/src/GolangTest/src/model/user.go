@@ -45,6 +45,21 @@ func Login(user User)(*User, error){
 	return &user, err
 }
 
+func GetInfoByPublicKey(user User)(*User, error){
+	sql :="select user_key,name,birthdate,gender,id_number,phone_number,location,account,password from tbl_user where user_key=?"
+	err := db.QueryRow(sql,user.PublicKey).Scan(&user.PublicKey,&user.Name,&user.BirthDate,&user.Gender,&user.IdNum,&user.PhoneNum,&user.Location,&user.Account,&user.Password)
+	util.CheckErr(err)
+	return &user, err
+}
+
+func UpdateInfo(user User)(int64, error){
+	sql :="update tbl_user set birthdate=?,gender=?,phone_number=?,location=? where user_key=?"
+	res, err := db.Exec(sql,user.BirthDate,user.Gender,user.PhoneNum,user.Location,user.PublicKey)
+	util.CheckErr(err)
+	result, err := res.RowsAffected()
+	return result, nil
+}
+
 func GetAllUser() error {
 	rows, err := db.Query("select * from user")
 	if err != nil {

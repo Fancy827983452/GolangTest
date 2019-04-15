@@ -18,8 +18,8 @@
 
                 <div class="col-md-5 col-md-offset-4">
                     <ul class="nav navbar-nav"  style="float:right">
-                        <li><a href="~/Account/SignIn"><span class="glyphicon glyphicon-user"></span> {{.username}}</a></li>
-                        <li><a href="~/Account/Register"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+                        <li><a id="userCenter"><span class="glyphicon glyphicon-user"></span> {{.username}}</a></li>
+                        <li><a href="/logout" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
                     </ul>
                 </div>
 
@@ -56,11 +56,12 @@
     </div>
     <div class="col-md-6 col-md-offset-3">
         <div class="form-horizontal" style="width: 80%;">
-            <form>
+            <form action="/user/editInfoPost" method="post">
+                <input name="publicKey" id="publicKey" hidden>
             <div class="form-group" >
                 <label for="username"><span>姓名</span></label>
-                <div><label class="form-control" id="username" style="width:300px;float: left "><span>{{.username}}</span></label></div>
-                <div><span style="color:red;float: left;margin-left: 10px;">*</span></div>
+                <input name="username" id="username" hidden>
+                <label class="form-control" style="width:300px">{{.username}}</label>
             </div>
             <div class="form-group">
                 <label>性别:</label>
@@ -76,16 +77,14 @@
                     </label>
                 </div>
                     </div>
-                <span style="color:red; margin-left: 10px;margin-top: 5px;">*</span>
             </div>
             <div class="form-group">
                 <label for="tel">电话号码:</label>
                 <input type="tel" name="tel" id="tel" class="form-control" style="width:300px">
             </div>
             <div class="form-group">
-                <label for="img">头像:</label>
-                <input type="file" name="file" id="img" >
-                <label class="form-control" style="width:300px"><span></span></label>
+                <label for="idnum">身份证号:</label>
+                <input type="text" name="idnum" id="idnum" class="form-control" style="width:300px" disabled>
             </div>
             <div class="form-group">
                 <label for="birthdata">出生日期:</label>
@@ -106,8 +105,8 @@
     </div>
 </div>
 
-<div>
-    <span id="123">{{.currentUser}}</span>
+<div hidden>
+    <span id="formValue">{{.currentUser}}</span>
 </div>
 
 </body>
@@ -115,13 +114,25 @@
     $(function(){
         var date_now = new Date();
         var year = date_now.getFullYear();
-        var month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
-        var date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
-        $("#birthdate").attr("max",year+"-"+month+"-"+date);
+        var month = date_now.getMonth() + 1 < 10 ? "0" + (date_now.getMonth() + 1) : (date_now.getMonth() + 1);
+        var date = date_now.getDate() < 10 ? "0" + date_now.getDate() : date_now.getDate();
+        $("#birthdate").attr("max", year + "-" + month + "-" + date);
     })
 
-    function readFromSession() {
-
+    window.onload=function () {
+        var jsonTxt=document.getElementById("formValue").innerText;
+        var obj=JSON.parse(jsonTxt)
+        document.getElementById("publicKey").value=obj.PublicKey;
+        document.getElementById("username").value=obj.Name;
+        document.getElementById("userCenter").href="/user/editInfo/"+obj.Name;
+        if(obj.Gender==0)
+            document.getElementById("sex1").checked=true;
+        else
+            document.getElementById("sex2").checked=true;
+        document.getElementById("birthdate").value=obj.BirthDate.substr(0,10);
+        document.getElementById("idnum").value=obj.IdNum;
+        document.getElementById("tel").value=obj.PhoneNum;
+        document.getElementById("location").value=obj.Location;
     }
 </script>
 </html>
