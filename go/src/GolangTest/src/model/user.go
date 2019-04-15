@@ -29,18 +29,26 @@ func Register(user User) (bool, error) {
 	return result > 0, nil
 }
 
+func CheckRegisteredPhone(user User) (int, error){
+	sql :="select ifnull(count(*),0) as count from tbl_user where phone_number=?"
+	var count int
+	err := db.QueryRow(sql,user.PhoneNum).Scan(&count)
+	util.CheckErr(err)
+	return count, err
+}
+
 //登录
 func CheckLogin(user User)(int, error){
-	sql :="select ifnull(count(*),0) as count from tbl_user where name=? and password=?"
+	sql :="select ifnull(count(*),0) as count from tbl_user where name=? or phone_number=? and password=?"
 	var count int
-	err := db.QueryRow(sql,user.Name,user.Password).Scan(&count)
+	err := db.QueryRow(sql,user.Name,user.Name,user.Password).Scan(&count)
 	util.CheckErr(err)
 	return count, err
 }
 
 func Login(user User)(*User, error){
-	sql :="select user_key,name,birthdate,gender,id_number,phone_number,location,account,password from tbl_user where name=? and password=?"
-	err := db.QueryRow(sql,user.Name,user.Password).Scan(&user.PublicKey,&user.Name,&user.BirthDate,&user.Gender,&user.IdNum,&user.PhoneNum,&user.Location,&user.Account,&user.Password)
+	sql :="select user_key,name,birthdate,gender,id_number,phone_number,location,account,password from tbl_user where name=? or phone_number=? and password=?"
+	err := db.QueryRow(sql,user.Name,user.Name,user.Password).Scan(&user.PublicKey,&user.Name,&user.BirthDate,&user.Gender,&user.IdNum,&user.PhoneNum,&user.Location,&user.Account,&user.Password)
 	util.CheckErr(err)
 	return &user, err
 }

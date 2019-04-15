@@ -60,7 +60,7 @@ func main() {
 				session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
 				session.Set("currentUser",util.ParseJson(user))
 				ctx.HTML("<script>alert('"+msg.Message+"');" +
-				"window.location.href='user/editInfo/"+u.Name+"';</script>")//URL传参
+				"window.location.href='user/editInfo/"+user.Name+"';</script>")//URL传参
 			}
 		})
 

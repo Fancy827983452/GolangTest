@@ -25,7 +25,6 @@ func RegisterPost(ctx iris.Context) {
 	var msg model.Uploador
 	u.Name = ctx.FormValue("username")
 	u.Password = ctx.FormValue("password")
-	confirmPassword:=ctx.FormValue("confirmPassword");
 	u.IdNum = ctx.FormValue("idnumber")
 	u.PhoneNum = ctx.FormValue("telephone")
 	u.Gender, _ =strconv.Atoi(ctx.FormValue("sex"))
@@ -34,7 +33,12 @@ func RegisterPost(ctx iris.Context) {
 	u.Account=0
 	u.PublicKey="tmp"
 
-	if confirmPassword==u.Password {//两次密码输入一致
+	count, _ :=model.CheckLogin(u)
+	if(count>0) {
+		msg.Success = false
+		msg.Message="该手机号已注册过！"
+		ctx.HTML("<script>alert('"+msg.Message+"');window.history.back(-1);</script>")
+	}else {
 		privateKey,publicKey,err:=algorithm.GetKey();
 		err=algorithm.SavePrivateKey("privateKey",privateKey)//保存私钥到本地
 		util.CheckErr(err)
@@ -44,10 +48,6 @@ func RegisterPost(ctx iris.Context) {
 		util.CheckErr(err)
 		msg.Success = result
 		msg.Message="注册成功！"
-		ctx.HTML("<script>alert('"+msg.Message+"');window.history.back(-1);</script>")
-	} else{
-		msg.Success = false
-		msg.Message="两次输入密码不一致！"
 		ctx.HTML("<script>alert('"+msg.Message+"');window.history.back(-1);</script>")
 	}
 }
