@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>医疗系统-医生</title>
+</head>
+<body>
+<iframe src="_layout.html" width="100%" frameborder="0" scrolling="0"></iframe>
+<div class="container">
+
+    <div class="col-lg-3">
+        <ul class="list-group" id="ueserfunction">
+            <li class="list-group-item">
+                <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="" />
+            </li>
+            <li class="list-group-item"><a href="Doctor.html">病人就诊</a></li>
+            <li class="list-group-item"><a href="DoctorEditInfo.html">修改信息</a></li>
+            <li class="list-group-item"><a href="DoctorEditPassword.html">修改密码</a></li>
+            <li class="list-group-item"><a href="DoctorVisit.html">病历访问</a></li>
+        </ul>
+    </div>
+    <div class="col-md-8 col-md-offset-1">
+        <div class="modal-body" style="width: 80%">
+            <a href="Doctor.html"><span><< 返回</span></a>
+            <form>
+            <div class="form-group">
+                <label for="illname">疾病名称</label>
+                <input type="text" class="form-control" id="illname" >
+            </div>
+            <div class="form-group">
+                <label for="illdetail">详情</label>
+                <textarea class="form-control" ID="illdetail" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="curedoctor">主治医生</label>
+                <input type="text" class="form-control" id="curedoctor" readonly>
+            </div>
+            <div class="form-group">
+                <label for="time">治疗时间</label>
+                <input type="text" class="form-control" id="time" readonly>
+            </div>
+            <div class="form-group" style="width:120px;float: left;margin-left: 33%;">
+                <input type="submit" class="btn btn-primary" value="提交">
+            </div>
+            <div class="form-group" style="width:120px;float: left;margin-left: 35px;">
+                <input type="reset" class="btn btn-primary" value="重置">
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

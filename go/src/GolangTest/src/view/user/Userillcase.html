@@ -18,8 +18,8 @@
 
                 <div class="col-md-5 col-md-offset-4">
                     <ul class="nav navbar-nav"  style="float:right">
-                        <li><a href="~/Account/SignIn"><span class="glyphicon glyphicon-user"></span> {{.username}}</a></li>
-                        <li><a href="~/Account/Register"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+                        <li><a id="userCenter"><span class="glyphicon glyphicon-user" id="userCenter1"></span> </a></li>
+                        <li><a href="/logout" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
                     </ul>
                 </div>
 
@@ -49,90 +49,111 @@
 
             <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="~/File/Images/@path" />
         </li>
-        <li class="list-group-item"><a href="/user/illcase">就诊病历</a></li>
         <li class="list-group-item"><a href="/user/editInfo">修改信息</a></li>
         <li class="list-group-item"><a href="/user/editPassword">修改密码</a></li>
+        <li class="list-group-item"><a href="/user/illcase">就诊记录</a></li>
         <li class="list-group-item"><a href="/user/visitRecord">病历访问记录</a></li>
         <li class="list-group-item"><a href="">申请授权</a></li>
     </ul>
 </div>
-<div class="col-md-8 col-md-offset-1">
-<div class="form-horizontal" style="width: 80%;">
-    <table class="table table-striped">
-        <caption>就诊记录</caption>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>时间</th>
-        <th>疾病名称</th>
-        <th>主治医生</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>1</td>
-        <td>2018年1月</td>
-        <td>感冒</td>
-        <td>刘医生</td>
-        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">查看详情</button></td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>2018年1月</td>
-        <td>发烧</td>
-        <td>刘医生</td>
-        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">查看详情</button></td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>2018年1月</td>
-        <td>感冒</td>
-        <td>刘医生</td>
-        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">查看详情</button></td>
-    </tr>
-    </tbody>
-</table>
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- 模态框头部 -->
-                <div class="modal-header">
-                    <h4 class="modal-title">病历详情</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
+    <div class="col-md-9 ">
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="#">个人中心</a></li>
+                <li>就诊记录</li>
+            </ul>
+        </div>
+        <div class="col-md-8 col-md-offset-1">
+        <div class="form-horizontal" style="width: 80%;">
+            <table class="table table-striped" style="width: 700px">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>时间</th>
+                <th>疾病名称</th>
+                <th>主治医生</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>2018年1月</td>
+                <td>感冒</td>
+                <td>刘医生</td>
+                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">查看详情</button></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2018年1月</td>
+                <td>发烧</td>
+                <td>刘医生</td>
+                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">查看详情</button></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>2018年1月</td>
+                <td>感冒</td>
+                <td>刘医生</td>
+                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">查看详情</button></td>
+            </tr>
+            </tbody>
+        </table>
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- 模态框头部 -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">病历详情</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
 
-                <!-- 模态框主体 -->
-                <div class="modal-body" style="width: 70%;margin-left: 100px;">
-                    <div class="form-group">
-                        <label for="name">姓名</label>
-                        <input type="text" class="form-control" id="name" readonly>
+                        <!-- 模态框主体 -->
+                        <div class="modal-body" style="width: 70%;margin-left: 100px;">
+                            <div class="form-group">
+                                <label for="name">姓名</label>
+                                <input type="text" class="form-control" id="name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="illname">疾病名称</label>
+                                <input type="text" class="form-control" id="illname" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="illdetail">详情</label>
+                                <textarea class="form-control" ID="illdetail" rows="4" readonly></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="curedoctor">主治医生</label>
+                                <input type="text" class="form-control" id="curedoctor" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="time">治疗时间</label>
+                                <input type="text" class="form-control" id="time" readonly>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn" data-dismiss="modal">关闭</a>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="illname">疾病名称</label>
-                        <input type="text" class="form-control" id="illname" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="illdetail">详情</label>
-                        <textarea class="form-control" ID="illdetail" rows="4" readonly></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="curedoctor">主治医生</label>
-                        <input type="text" class="form-control" id="curedoctor" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="time">治疗时间</label>
-                        <input type="text" class="form-control" id="time" readonly>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="#" class="btn" data-dismiss="modal">关闭</a>
                 </div>
             </div>
         </div>
+        </div>
     </div>
 </div>
-</div>
+
+<div hidden>
+    <span id="formValue">{{.currentUser}}</span>
 </div>
 </body>
+
+<script>
+    window.onload=function () {
+        var jsonTxt=document.getElementById("formValue").innerText;
+        var obj=JSON.parse(jsonTxt)
+        // document.getElementById("publicKey").value=obj.PublicKey;
+        document.getElementById("userCenter").href="/user/editInfo";
+        document.getElementById("userCenter1").innerText=obj.Name;
+    }
+</script>
 </html>

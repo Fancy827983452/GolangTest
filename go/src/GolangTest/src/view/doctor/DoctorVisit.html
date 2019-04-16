@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>医疗系统-医生</title>
+</head>
+<body>
+<iframe src="_layout.html" width="100%" frameborder="0" scrolling="0"></iframe>
+<div class="container">
+    <div class="col-lg-3">
+        <ul class="list-group" id="ueserfunction">
+            <li class="list-group-item">
+                <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="~/File/Images/@path" />
+            </li>
+            <li class="list-group-item"><a href="Doctor.html">病人就诊</a></li>
+            <li class="list-group-item"><a href="DoctorEditInfo.html">修改信息</a></li>
+            <li class="list-group-item"><a href="DoctorEditPassword.html">修改密码</a></li>
+            <li class="list-group-item"><a href="DoctorVisit.html">病历访问</a></li>
+        </ul>
+    </div>
+    <div class="col-md-8 col-md-offset-1">
+        <div class="input-group">
+            <input type="text" class="form-control" style="float: left; width: 200px;height: 32px;">
+            <button type="button" class="input-group-addon" style="float: left; width: 35px; height: 32px;"><span class="glyphicon glyphicon-search" style="color: rgb(124, 165, 230);"></span></button>
+        </div>
+        <div class="form-horizontal" style="width: 80%;">
+            <table class="table table-striped">
+                <caption>访问记录</caption>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>时间</th>
+                    <th>疾病名称</th>
+                    <th>患者姓名</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2018年1月</td>
+                    <td>感冒</td>
+                    <td>123</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>2018年1月</td>
+                    <td>发烧</td>
+                    <td>3132</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>2018年1月</td>
+                    <td>感冒</td>
+                    <td>312</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

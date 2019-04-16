@@ -18,8 +18,8 @@
 
                 <div class="col-md-5 col-md-offset-4">
                     <ul class="nav navbar-nav"  style="float:right">
-                        <li><a href="~/Account/SignIn"><span class="glyphicon glyphicon-user"></span> {{.username}}</a></li>
-                        <li><a href="~/Account/Register"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+                        <li><a id="userCenter"><span class="glyphicon glyphicon-user" id="userCenter1"></span> </a></li>
+                        <li><a href="/logout" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
                     </ul>
                 </div>
 
@@ -48,57 +48,77 @@
             <li class="list-group-item">
                 <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="~/File/Images/@path" />
             </li>
-            <li class="list-group-item"><a href="/user/illcase">就诊病历</a></li>
             <li class="list-group-item"><a href="/user/editInfo">修改信息</a></li>
             <li class="list-group-item"><a href="/user/editPassword">修改密码</a></li>
+            <li class="list-group-item"><a href="/user/illcase">就诊记录</a></li>
             <li class="list-group-item"><a href="/user/visitRecord">病历访问记录</a></li>
             <li class="list-group-item"><a href="">申请授权</a></li>
         </ul>
     </div>
-    <div class="col-md-8 col-md-offset-1">
-        <div class="form-horizontal" style="width: 80%;">
-            <table class="table table-striped">
-                <caption>病历访问记录</caption>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>时间</th>
-                    <th>疾病名称</th>
-                    <th>访问者</th>
-                    <th>访问目的</th>
-                    <th>状态</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>2018年1月</td>
-                    <td>感冒</td>
-                    <td>刘医生</td>
-                    <td>复诊</td>
-                    <td>同意</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>2018年2月</td>
-                    <td>发烧</td>
-                    <td>刘医生</td>
-                    <td>流行病统计</td>
-                    <td>拒绝</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>2018年1月</td>
-                    <td>感冒</td>
-                    <td>刘医生</td>
-                    <td>复诊</td>
-                    <td>同意</td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="col-md-9 ">
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="#">个人中心</a></li>
+                <li>病例访问记录</li>
+            </ul>
+        </div>
+        <div class="col-md-8 col-md-offset-1">
+            <div class="form-horizontal" style="width: 80%;">
+                <table class="table table-striped" style="width: 700px">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>时间</th>
+                        <th>疾病名称</th>
+                        <th>访问者</th>
+                        <th>访问目的</th>
+                        <th>状态</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2018年1月</td>
+                        <td>感冒</td>
+                        <td>刘医生</td>
+                        <td>复诊</td>
+                        <td>同意</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2018年2月</td>
+                        <td>发烧</td>
+                        <td>刘医生</td>
+                        <td>流行病统计</td>
+                        <td>拒绝</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>2018年1月</td>
+                        <td>感冒</td>
+                        <td>刘医生</td>
+                        <td>复诊</td>
+                        <td>同意</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+<div hidden>
+    <span id="formValue">{{.currentUser}}</span>
+</div>
 </body>
+
+<script>
+    window.onload=function () {
+        var jsonTxt=document.getElementById("formValue").innerText;
+        var obj=JSON.parse(jsonTxt)
+        // document.getElementById("publicKey").value=obj.PublicKey;
+        document.getElementById("userCenter").href="/user/editInfo";
+        document.getElementById("userCenter1").innerText=obj.Name;
+    }
+</script>
 </html>

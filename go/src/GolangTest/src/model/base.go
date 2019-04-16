@@ -1,5 +1,7 @@
 package model
 
-import "mydb"
+import (
+	"mydb"
+)
 
 var db = mydb.DB

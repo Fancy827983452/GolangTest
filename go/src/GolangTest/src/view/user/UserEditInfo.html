@@ -18,7 +18,7 @@
 
                 <div class="col-md-5 col-md-offset-4">
                     <ul class="nav navbar-nav"  style="float:right">
-                        <li><a id="userCenter"><span class="glyphicon glyphicon-user"></span> {{.username}}</a></li>
+                        <li><a id="userCenter"><span class="glyphicon glyphicon-user" id="userCenter1"></span> </a></li>
                         <li><a href="/logout" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
                     </ul>
                 </div>
@@ -47,21 +47,29 @@
             <li class="list-group-item">
                 <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="~/File/Images/@path" />
             </li>
-            <li class="list-group-item"><a href="/user/illcase">就诊病历</a></li>
             <li class="list-group-item"><a href="/user/editInfo">修改信息</a></li>
             <li class="list-group-item"><a href="/user/editPassword">修改密码</a></li>
+            <li class="list-group-item"><a href="/user/illcase">就诊记录</a></li>
             <li class="list-group-item"><a href="/user/visitRecord">病历访问记录</a></li>
             <li class="list-group-item"><a href="">申请授权</a></li>
         </ul>
     </div>
-    <div class="col-md-6 col-md-offset-3">
+
+    <div class="col-md-9 ">
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="#">个人中心</a></li>
+                <li>修改个人信息</li>
+            </ul>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
         <div class="form-horizontal" style="width: 80%;">
+
             <form action="/user/editInfoPost" method="post">
                 <input name="publicKey" id="publicKey" hidden>
             <div class="form-group" >
                 <label for="username"><span>姓名</span></label>
-                <input name="username" id="username" hidden>
-                <label class="form-control" style="width:300px">{{.username}}</label>
+                <input name="username" id="username" class="form-control" style="width:300px" readonly>
             </div>
             <div class="form-group">
                 <label>性别:</label>
@@ -103,6 +111,7 @@
             </form>
         </div>
     </div>
+    </div>
 </div>
 
 <div hidden>
@@ -124,7 +133,8 @@
         var obj=JSON.parse(jsonTxt)
         document.getElementById("publicKey").value=obj.PublicKey;
         document.getElementById("username").value=obj.Name;
-        document.getElementById("userCenter").href="/user/editInfo/"+obj.Name;
+        document.getElementById("userCenter").href="/user/editInfo";
+        document.getElementById("userCenter1").innerText=obj.Name;
         if(obj.Gender==0)
             document.getElementById("sex1").checked=true;
         else

@@ -24,7 +24,7 @@ func GetKey() (*ecdsa.PrivateKey,*ecdsa.PublicKey,error){
 	//fmt.Println("公钥 %s",pub)
 	return prk,pub,err
 }
-
+//非对称加密
 //公钥加密
 func ECCEncrypt(pt []byte, pub *ecdsa.PublicKey) ([]byte, error) {
 	pub2 := ImportECDSAPublic(pub)//将ECDSA公钥转换为ECIES公钥

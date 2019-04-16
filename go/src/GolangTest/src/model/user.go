@@ -41,7 +41,7 @@ func CheckRegisteredPhone(user User) (int, error){
 
 //登录
 func CheckLogin(user User)(int, error){
-	sql :="select ifnull(count(*),0) as count from tbl_user where name=? or phone_number=? and password=?"
+	sql :="select ifnull(count(*),0) as count from tbl_user where (name=? or phone_number=?) and password=?"
 	var count int
 	err := db.QueryRow(sql,user.Name,user.Name,user.Password).Scan(&count)
 	util.CheckErr(err)
@@ -49,7 +49,7 @@ func CheckLogin(user User)(int, error){
 }
 
 func Login(user User)(*User, error){
-	sql :="select user_key,name,birthdate,gender,id_number,phone_number,location,password,aec_key,addr from tbl_user where name=? or phone_number=? and password=?"
+	sql :="select user_key,name,birthdate,gender,id_number,phone_number,location,password,aec_key,addr from tbl_user where (name=? or phone_number=?) and password=?"
 	err := db.QueryRow(sql,user.Name,user.Name,user.Password).Scan(&user.PublicKey,&user.Name,&user.BirthDate,&user.Gender,&user.IdNum,&user.PhoneNum,&user.Location,&user.Password,&user.Ace_Key,&user.Addr)
 	util.CheckErr(err)
 	return &user, err
@@ -62,9 +62,19 @@ func GetInfoByPublicKey(user User)(*User, error){
 	return &user, err
 }
 
+//更新用户信息
 func UpdateInfo(user User)(int64, error){
 	sql :="update tbl_user set birthdate=?,gender=?,phone_number=?,location=? where user_key=?"
 	res, err := db.Exec(sql,user.BirthDate,user.Gender,user.PhoneNum,user.Location,user.PublicKey)
+	util.CheckErr(err)
+	result, err := res.RowsAffected()
+	return result, nil
+}
+
+//修改密码
+func UpdatePwd(user User)(int64, error){
+	sql :="update tbl_user set password=? where user_key=?"
+	res, err := db.Exec(sql,user.Password,user.PublicKey)
 	util.CheckErr(err)
 	result, err := res.RowsAffected()
 	return result, nil
