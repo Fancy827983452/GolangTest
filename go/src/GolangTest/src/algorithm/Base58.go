@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/ripemd160"
 	//"fmt"
 	"encoding/hex"
+	//"crypto/ecdsa"
 )
 
 var b58Alphabet = []byte("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
@@ -98,9 +99,9 @@ func IsValidForAdress(adress []byte) bool {
 }
 
 //获取用户地址（公钥经过Ripemd160Hash,再经过base58编码,最后生成地址）
-func GetAddress(pk []byte) []byte  {
+func GetAddress(pk string) []byte  {
 
-	pkey, err := hex.DecodeString(string(pk))//对数据库中的公钥进行解码，前提是公钥是经过EncodeString存入的。
+	pkey, err := hex.DecodeString(pk)//对数据库中的公钥进行解码，前提是公钥是经过EncodeString存入的。
 	if err != nil {
 		return nil
 	}

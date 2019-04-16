@@ -7,6 +7,7 @@ import (
 	"util"
 	"algorithm"
 	"strconv"
+	"encoding/hex"
 )
 
 func main() {
@@ -52,13 +53,18 @@ func main() {
 				msg.Message="用户名或密码错误！"
 				ctx.HTML("<script>alert('"+msg.Message+"');window.history.back(-1);</script>")
 			} else {
-				user,err := model.Login(u);//获取公钥
+				user,err := model.Login(u);
 				util.CheckErr(err)
 				msg.Success = true
 				msg.Message="登陆成功！"
 				//获取session管理器
 				session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+				idnum, _ :=hex.DecodeString(user.IdNum)
+				user.IdNum=string(algorithm.AEC_CRT_Crypt(idnum,[]byte(user.Ace_Key)))
+				location, _ :=hex.DecodeString(user.Location)
+				user.Location=string(algorithm.AEC_CRT_Crypt(location,[]byte(user.Ace_Key)))
 				session.Set("currentUser",util.ParseJson(user))
+				session.Set("AEC_KEY",user.Ace_Key)
 				ctx.HTML("<script>alert('"+msg.Message+"');" +
 				"window.location.href='user/editInfo/"+user.Name+"';</script>")//URL传参
 			}
@@ -93,13 +99,22 @@ func main() {
 			u.PhoneNum = ctx.FormValue("tel")
 			u.BirthDate = ctx.FormValue("birthdate")
 			u.Location = ctx.FormValue("location")
-			//ctx.JSON(u)
+
+			session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+			var Ace_Key string
+			Ace_Key=session.Get("AEC_KEY").(string)
+			u.Location=hex.EncodeToString(algorithm.AEC_CRT_Crypt([]byte(u.Location),[]byte(Ace_Key)))
 			result, _ := model.UpdateInfo(u); //插入数据库，返回操作结果（true或false）
+
 			if result > 0 {
 				msg.Success = true
 				msg.Message = "个人信息更新成功！"
 				user, err := model.GetInfoByPublicKey(u)
 				util.CheckErr(err)
+				idnum, _ :=hex.DecodeString(user.IdNum)
+				user.IdNum=string(algorithm.AEC_CRT_Crypt(idnum,[]byte(Ace_Key)))
+				location, _ :=hex.DecodeString(user.Location)
+				user.Location=string(algorithm.AEC_CRT_Crypt(location,[]byte(Ace_Key)))
 				session := sessionMgr.BeginSession(ctx.ResponseWriter(), ctx.Request())
 				session.Set("currentUser", util.ParseJson(user)) //更新session
 				ctx.HTML("<script>alert('" + msg.Message + "');" +
