@@ -5,6 +5,12 @@
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/static/validator/vendor/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/validator/dist/css/bootstrapValidator.css"/>
+    <script type="text/javascript" src="/static/validator/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/static/validator/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/validator/dist/js/bootstrapValidator.js"></script>
     <title>医疗系统</title>
 </head>
 <body>
@@ -65,7 +71,7 @@
         <div class="col-md-6 col-md-offset-3">
         <div class="form-horizontal" style="width: 80%;">
 
-            <form action="/user/editInfoPost" method="post">
+            <form id="userEditInfoForm" action="/user/editInfoPost" method="post">
                 <input name="publicKey" id="publicKey" hidden>
             <div class="form-group" >
                 <label for="username"><span>姓名</span></label>
@@ -76,12 +82,12 @@
                 <div>
                 <div class="radio" style="float: left">
                     <label>
-                        <input type="radio" name="sex" id="sex1" value="0" checked> 男
+                        <input type="radio" name="sex" id="sex1" value="0" disabled> 男
                     </label>
                 </div>
                 <div class="radio" style="float: left;margin-left: 50px;">
                     <label>
-                        <input type="radio" name="sex" id="sex2" value="1"> 女
+                        <input type="radio" name="sex" id="sex2" value="1" disabled> 女
                     </label>
                 </div>
                     </div>
@@ -96,17 +102,17 @@
             </div>
             <div class="form-group">
                 <label for="birthdata">出生日期:</label>
-                <input type="date" name="birthdate" id="birthdate" class="form-control" style="width:300px">
+                <input type="date" name="birthdate" id="birthdate" class="form-control" style="width:300px" readonly>
             </div>
             <div class="form-group">
                 <label for="loaction">地址:</label>
                 <input name="location" id="location" class="form-control" value="" style="width:300px">
             </div>
             <div class="form-group" style="float: left;margin-left: 50px;">
-                <input type="submit" class="btn btn-primary" value="提交" onclick="return checkNull()">
+                <button type="submit" class="btn btn-primary">修改</button>
             </div>
             <div class="form-group" style="float: left;margin-left: 50px;">
-                <input type="reset" class="btn btn-primary" value="重置">
+                <a href="/user/editInfo" class="btn btn-primary">重置</a>
             </div>
             </form>
         </div>
@@ -119,40 +125,5 @@
 </div>
 
 </body>
-<script>
-    $(function(){
-        var date_now = new Date();
-        var year = date_now.getFullYear();
-        var month = date_now.getMonth() + 1 < 10 ? "0" + (date_now.getMonth() + 1) : (date_now.getMonth() + 1);
-        var date = date_now.getDate() < 10 ? "0" + date_now.getDate() : date_now.getDate();
-        $("#birthdate").attr("max", year + "-" + month + "-" + date);
-    })
-
-    window.onload=function () {
-        var jsonTxt=document.getElementById("formValue").innerText;
-        var obj=JSON.parse(jsonTxt)
-        document.getElementById("publicKey").value=obj.PublicKey;
-        document.getElementById("username").value=obj.Name;
-        document.getElementById("userCenter").href="/user/editInfo";
-        document.getElementById("userCenter1").innerText=obj.Name;
-        if(obj.Gender==0)
-            document.getElementById("sex1").checked=true;
-        else
-            document.getElementById("sex2").checked=true;
-        document.getElementById("birthdate").value=obj.BirthDate.substr(0,10);
-        document.getElementById("idnum").value=obj.IdNum;
-        document.getElementById("tel").value=obj.PhoneNum;
-        document.getElementById("location").value=obj.Location;
-    }
-    
-    function checkNull() {
-        var tel = document.getElementById("tel").value;
-        var birth = document.getElementById("birthdate").value;
-        var location = document.getElementById("location").value;
-        if (tel.length == 0 || birth.length == 0 || location.length == 0) {
-            alert("请填写完整信息！");
-            return false;
-        }
-    }
-</script>
+<script type="text/javascript" src="/static/js/userEditInfo.js"></script>
 </html>

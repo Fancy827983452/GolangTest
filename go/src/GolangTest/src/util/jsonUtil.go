@@ -1,6 +1,8 @@
 package util
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 //将结构体转变为json格式
 func ParseJson(v interface{}) (string) {

@@ -111,14 +111,5 @@
     <span id="formValue">{{.currentUser}}</span>
 </div>
 </body>
-
-<script>
-    window.onload=function () {
-        var jsonTxt=document.getElementById("formValue").innerText;
-        var obj=JSON.parse(jsonTxt)
-        // document.getElementById("publicKey").value=obj.PublicKey;
-        document.getElementById("userCenter").href="/user/editInfo";
-        document.getElementById("userCenter1").innerText=obj.Name;
-    }
-</script>
+<script type="text/javascript" src="/static/js/userVisitRecord.js"></script>
 </html>

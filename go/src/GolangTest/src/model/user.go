@@ -64,8 +64,8 @@ func GetInfoByPublicKey(user User)(*User, error){
 
 //更新用户信息
 func UpdateInfo(user User)(int64, error){
-	sql :="update tbl_user set birthdate=?,gender=?,phone_number=?,location=? where user_key=?"
-	res, err := db.Exec(sql,user.BirthDate,user.Gender,user.PhoneNum,user.Location,user.PublicKey)
+	sql :="update tbl_user set phone_number=?,location=? where user_key=?"
+	res, err := db.Exec(sql,user.PhoneNum,user.Location,user.PublicKey)
 	util.CheckErr(err)
 	result, err := res.RowsAffected()
 	return result, nil

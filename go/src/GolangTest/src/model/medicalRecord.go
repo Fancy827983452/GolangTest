@@ -7,12 +7,22 @@ import (
 )
 
 type MedicalRecord struct {
-	ID        uint32
-	UserKey   string
-	Name      string
-	Info      string
-	Time      string
-	DoctorKey string
+	ID        	uint32	//medical_record_id
+	Time      	string	//添加时间
+	Symptom     string  //症状描述
+	DeseaseName string	//疾病名称
+	Info      	string	//疾病详情
+	DepName		string  //就诊科室名
+	HospitalName string
+	DoctorName 	string  //医生姓名
+	UserKey   	string
+	DoctorKey 	string
+	Status      int
+}
+
+// Users is struct
+type MedicalRecords struct {
+	Items    []*MedicalRecord
 }
 
 var md MedicalRecord
@@ -53,7 +63,7 @@ func GetAllMedicalRecord() error {
 		return err
 	}
 	if rows.Next() {
-		if err := rows.Scan(&md.ID, &md.UserKey, &md.Name, &md.Info, &md.Time, &md.DoctorKey); err == nil {
+		if err := rows.Scan(&md.ID, &md.Time, &md.DeseaseName, &md.Info, &md.UserKey, &md.DoctorKey); err == nil {
 			fmt.Println(md)
 		} else {
 			return err
@@ -62,24 +72,33 @@ func GetAllMedicalRecord() error {
 	return err
 }
 
-/*
-根据用户key查询病例记录
- */
-func GetMedicalRecordByUser(userKey string) []MedicalRecord {
-	var medicalRecords []MedicalRecord
-	query := "select * from tbl_medical_record mr where mr.userMR_key='" + userKey + "'"
+func UpdateStatus(id int,status int) (int64, error){
+	query:="update tbl_medical_record set status=? where medical_record_id=?"
+	res, err := db.Exec(query, status,id)
+	util.CheckErr(err)
+	result, err := res.RowsAffected()
+	return result, nil
+}
+
+//根据用户key查询病例记录
+func GetMedicalRecordByUser(userKey string) *MedicalRecords {
+	var result MedicalRecords
+	result.Items = []*MedicalRecord{}
+	query := "select medical_record_id,add_time,desease,record_info,department_name,tbl_doctor.name,tbl_medical_institution.name,tbl_medical_record.doctor_key,status,symptom " +
+		"from tbl_medical_record " +
+		"join tbl_doctor on tbl_medical_record.doctor_key=tbl_doctor.doctor_key " +
+		"join tbl_medical_institution_department on tbl_medical_record.department_id=tbl_medical_institution_department.department_id " +
+		"join tbl_medical_institution on tbl_medical_record.institution_id=tbl_medical_institution.medical_institution_id " +
+		"where userMR_key='" + userKey + "'"
 	rows, err := db.Query(query)
 	util.CheckErr(err)
 	for rows.Next() {
-		var mr MedicalRecord
-		if err = rows.Scan(&mr.ID, &mr.Name, &mr.UserKey, &mr.DoctorKey,
-			&mr.Time, &mr.Info); err == nil {
-			medicalRecords = append(medicalRecords, mr)
-		} else {
-			panic(err)
-		}
+		item := MedicalRecord{}
+		err = rows.Scan(&item.ID, &item.Time, &item.DeseaseName, &item.Info,&item.DepName,&item.DoctorName,&item.HospitalName,&item.DoctorKey,&item.Status,&item.Symptom)
+		util.CheckErr(err)
+		result.Items = append(result.Items, &item)
 	}
-	return medicalRecords
+	return &result
 }
 
 /*
@@ -94,8 +113,7 @@ func GetMedicalRecordByLabel(idList []uint32) []MedicalRecord {
 		util.CheckErr(err)
 		for rows.Next() {
 			var mr MedicalRecord
-			if err = rows.Scan(&mr.ID, &mr.Name, &mr.UserKey, &mr.DoctorKey,
-				&mr.Time, &mr.Info); err == nil {
+			if err = rows.Scan(&mr.ID, &mr.DeseaseName, &mr.UserKey, &mr.DoctorKey, &mr.Time, &mr.Info); err == nil {
 				medicalRecords = append(medicalRecords, mr)
 			} else {
 				panic(err)
@@ -117,7 +135,7 @@ func GetMedicalRecordByTime(startTime time.Time, endTime time.Time) []MedicalRec
 	rows, err := db.Query(query)
 	util.CheckErr(err)
 	for rows.Next() {
-		if err = rows.Scan(&mr.ID, &mr.Name, &mr.Info, &mr.UserKey, &mr.DoctorKey, &mr.Time); err == nil {
+		if err = rows.Scan(&mr.ID, &mr.DeseaseName, &mr.Info, &mr.UserKey, &mr.DoctorKey, &mr.Time); err == nil {
 			mrs = append(mrs, mr)
 		} else {
 			util.CheckErr(err)

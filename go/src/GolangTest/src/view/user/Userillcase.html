@@ -46,7 +46,6 @@
 <div class="col-lg-3">
     <ul class="list-group" id="ueserfunction">
         <li class="list-group-item">
-
             <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="~/File/Images/@path" />
         </li>
         <li class="list-group-item"><a href="/user/editInfo">修改信息</a></li>
@@ -65,70 +64,76 @@
         </div>
         <div class="col-md-8 col-md-offset-1">
         <div class="form-horizontal" style="width: 80%;">
-            <table class="table table-striped" style="width: 700px">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>时间</th>
-                <th>疾病名称</th>
-                <th>主治医生</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>1</td>
-                <td>2018年1月</td>
-                <td>感冒</td>
-                <td>刘医生</td>
-                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">查看详情</button></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>2018年1月</td>
-                <td>发烧</td>
-                <td>刘医生</td>
-                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">查看详情</button></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>2018年1月</td>
-                <td>感冒</td>
-                <td>刘医生</td>
-                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">查看详情</button></td>
-            </tr>
-            </tbody>
-        </table>
+            <form action="" method="post" id="userForm" name="userForm">
+                <table id="table" name="table" class="table table-striped" style="width: 700px">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" name="all_check"></th>
+                            {{/*<th>ID</th>*/}}
+                            <th>就诊时间</th>
+                            <th>诊断结果</th>
+                            <th>科室</th>
+                            <th>主治医师</th>
+                            <th>医院</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+
+                {{/*隐藏域传值*/}}
+                <div hidden>
+                    <input name="publicKey" id="publicKey">
+                    <input id="selectedItem" name="selectedItem">
+                </div>
+
+                <div style="float: right">
+                    <button type="button" class="btn btn-primary" onmouseup="return confirmLock()">锁定记录</button>
+                    <button type="button" class="btn btn-success" onmouseup="return confirmUnlock()">解锁记录</button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" onmousedown="return checkSelectedOne()" onmouseup="modal(this)">查看详情</button>
+                </div>
+            </form>
+
+            {{/*模态框*/}}
             <div class="modal fade" id="myModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <!-- 模态框头部 -->
                         <div class="modal-header">
-                            <h4 class="modal-title">病历详情</h4>
+                            <h4 class="modal-title">诊治记录详情</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
                         <!-- 模态框主体 -->
                         <div class="modal-body" style="width: 70%;margin-left: 100px;">
                             <div class="form-group">
-                                <label for="name">姓名</label>
-                                <input type="text" class="form-control" id="name" readonly>
+                                <label>患者：</label>
+                                <span id="modal_name" name="modal_name"></span>
+                                (<span id="modal_age" name="modal_age"></span> 岁，
+                                <span id="modal_gender" name="modal_gender"></span>)
                             </div>
                             <div class="form-group">
-                                <label for="illname">疾病名称</label>
-                                <input type="text" class="form-control" id="illname" readonly>
+                                <label for="modal_symptom">症状描述：</label>
+                                <span id="modal_symptom" name="modal_symptom"></span>
                             </div>
                             <div class="form-group">
-                                <label for="illdetail">详情</label>
-                                <textarea class="form-control" ID="illdetail" rows="4" readonly></textarea>
+                                <label for="modal_illdetail">详细诊断：</label>
+                                <textarea class="form-control" id="modal_illdetail" name="modal_illdetail" rows="4" readonly></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="curedoctor">主治医生</label>
-                                <input type="text" class="form-control" id="curedoctor" readonly>
+                                <label for="modal_illname">诊断结果：</label>
+                                <span id="modal_illname" name="modal_illname"></span>
                             </div>
                             <div class="form-group">
-                                <label for="time">治疗时间</label>
-                                <input type="text" class="form-control" id="time" readonly>
+                                <label>主治医生：</label>
+                                <span id="modal_curedoctor" name="modal_curedoctor"></span>，
+                                <span id="modal_hospital" name="modal_hospital"></span>-
+                                <span id="modal_department" name="modal_department"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal_time">就诊时间：</label>
+                                <span id="modal_time" name="modal_time"></span>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -137,6 +142,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         </div>
     </div>
@@ -144,16 +150,10 @@
 
 <div hidden>
     <span id="formValue">{{.currentUser}}</span>
+    <span id="illcase">{{.illcase}}</span>
 </div>
 </body>
 
-<script>
-    window.onload=function () {
-        var jsonTxt=document.getElementById("formValue").innerText;
-        var obj=JSON.parse(jsonTxt)
-        // document.getElementById("publicKey").value=obj.PublicKey;
-        document.getElementById("userCenter").href="/user/editInfo";
-        document.getElementById("userCenter1").innerText=obj.Name;
-    }
-</script>
+<script type="text/javascript" src="/static/js/userIllcase.js"></script>
+
 </html>

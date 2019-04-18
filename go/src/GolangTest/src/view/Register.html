@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/static/validator/vendor/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/validator/dist/css/bootstrapValidator.css"/>
+    <script type="text/javascript" src="/static/validator/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/static/validator/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/validator/dist/js/bootstrapValidator.js"></script>
 </head>
 <body>
 <div>
@@ -50,7 +56,7 @@
             </div>
             <div class="col-md-5 form-register" style="margin-top: 50px">
                 <div>
-                    <form class="form-horizontal" id="form" action="/registerPost" method="post">
+                    <form id="registerForm" class="form-horizontal" action="/registerPost" method="post">
                         <div class="form-group">
                             <label for="username" class="col-sm-3 control-label">用户名</label>
                             <div class="col-sm-9">
@@ -120,8 +126,8 @@
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-7" >
                                 <div style="float: left">
-                                    <input type="submit" class="btn btn-primary login-input" value="注册"
-                                           name="submit" onclick="return checkNull()">
+                                    <button type="submit" class="btn btn-primary login-input"
+                                            name="register" id="register">注册</button>
                                 </div>
                                 <div style="float: left;margin-left: 50px;">
                                     <input type="reset" class="btn btn-primary login-input" value="重置"
@@ -137,33 +143,5 @@
     </div>
 </div>
 </body>
-<script>
-    $(function(){
-        var date_now = new Date();
-        var year = date_now.getFullYear();
-        var month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
-        var date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
-        $("#birthdate").attr("max",year+"-"+month+"-"+date);
-    })
-
-    function checkNull() {
-        var username=document.getElementById("username").value;
-        var tel = document.getElementById("telephone").value;
-        var birth = document.getElementById("birthdate").value;
-        var idnum = document.getElementById("idnumber").value;
-        var location = document.getElementById("location").value;
-        var pwd = document.getElementById("password").value;
-        var cofmpwd = document.getElementById("confirmPassword").value;
-        if (username.length==0||tel.length == 0 || birth.length == 0 ||idnum.length==0||
-                location.length == 0||pwd.length==0||cofmpwd.length==0) {
-            alert("请填写完整信息！");
-            return false;
-        }
-        if (pwd!=cofmpwd)
-        {
-            alert("两次输入密码不一致！");
-            return false;
-        }
-    }
-</script>
+<script type="text/javascript" src="/static/js/register.js"></script>
 </html>

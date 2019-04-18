@@ -8,7 +8,8 @@ import (
 
 func main() {
 	app := iris.New()
-	//app.StaticWeb("./src/view/static", "/")
+	//设置静态文件请求路径，HTML页面请求时，src="/static/xxx"
+	app.StaticWeb("/static", "./src/view/static")
 	// Reload 方法设置为 true 表示开启开发者模式 将会每一次请求都重新加载 views 文件下的所有模板
 	app.RegisterView(iris.HTML("./src/view", ".html").Reload(true))
 
@@ -36,6 +37,8 @@ func main() {
 		user.Get("/editPassword",controller.EditUserPwd)
 		user.Post("/editPasswordPost",controller.EditUserPwdPost)
 		user.Get("/illcase",controller.UserIllcase)
+		user.Post("/illcase/lockRecord",controller.LockRecord)
+		user.Post("/illcase/unlockRecord",controller.UnlockRecord)
 		user.Get("/visitRecord",controller.VisitUserRecord)
 	}
 

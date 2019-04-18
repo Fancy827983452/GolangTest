@@ -6,7 +6,6 @@ import (
 	"algorithm"
 	"model"
 	"util"
-	"strconv"
 )
 
 func EditUserInfo(ctx iris.Context) {
@@ -21,9 +20,9 @@ func EditUserInfoPost(ctx iris.Context) {
 	var msg model.Uploador
 	u.PublicKey = ctx.FormValue("publicKey")
 	u.Name = ctx.FormValue("username")
-	u.Gender, _ = strconv.Atoi(ctx.FormValue("sex"))
+	//u.Gender, _ = strconv.Atoi(ctx.FormValue("sex"))
 	u.PhoneNum = ctx.FormValue("tel")
-	u.BirthDate = ctx.FormValue("birthdate")
+	//u.BirthDate = ctx.FormValue("birthdate")
 	u.Location = ctx.FormValue("location")
 	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
 	var Ace_Key string
@@ -44,7 +43,7 @@ func EditUserInfoPost(ctx iris.Context) {
 		ctx.HTML("<script>alert('" + msg.Message + "');" +
 			"window.location.href='editInfo';</script>")
 	} else {
-		msg.Message="个人信息更新失败！"
+		msg.Message="没有做任何更改！"
 		ctx.HTML("<script>alert('"+msg.Message+"');window.history.back(-1);</script>")
 	}
 }
@@ -79,13 +78,6 @@ func EditUserPwdPost(ctx iris.Context){
 		}
 	}
 	ctx.HTML("<script>alert('"+msg+"');window.history.back(-1);</script>")
-}
-
-func UserIllcase(ctx iris.Context) {
-	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
-	currentUser:=session.Get("currentUser")
-	ctx.ViewData("currentUser",currentUser)
-	ctx.View("user/Userillcase.html")
 }
 
 func VisitUserRecord(ctx iris.Context) {
