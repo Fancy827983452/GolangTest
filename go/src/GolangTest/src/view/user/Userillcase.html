@@ -89,8 +89,8 @@
                 </div>
 
                 <div style="float: right">
-                    <button type="button" class="btn btn-primary" onmouseup="return confirmLock()">锁定记录</button>
-                    <button type="button" class="btn btn-success" onmouseup="return confirmUnlock()">解锁记录</button>
+                    <button type="button" class="btn btn-primary" onmousedown="return checkSelected()" onmouseup="return confirmLock()">锁定记录</button>
+                    <button type="button" class="btn btn-success" onmousedown="return checkSelected()" onmouseup="return confirmUnlock()">解锁记录</button>
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" onmousedown="return checkSelectedOne()" onmouseup="modal(this)">查看详情</button>
                 </div>
             </form>

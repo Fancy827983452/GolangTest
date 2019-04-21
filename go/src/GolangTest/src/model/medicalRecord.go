@@ -84,7 +84,7 @@ func UpdateStatus(id int,status int) (int64, error){
 func GetMedicalRecordByUser(userKey string) *MedicalRecords {
 	var result MedicalRecords
 	result.Items = []*MedicalRecord{}
-	query := "select medical_record_id,add_time,desease,record_info,department_name,tbl_doctor.name,tbl_medical_institution.name,tbl_medical_record.doctor_key,status,symptom " +
+	query := "select medical_record_id,add_time,desease,record_info,department_name,tbl_doctor.name,tbl_medical_institution.name,tbl_medical_record.doctor_key,tbl_medical_record.status,symptom " +
 		"from tbl_medical_record " +
 		"join tbl_doctor on tbl_medical_record.doctor_key=tbl_doctor.doctor_key " +
 		"join tbl_medical_institution_department on tbl_medical_record.department_id=tbl_medical_institution_department.department_id " +

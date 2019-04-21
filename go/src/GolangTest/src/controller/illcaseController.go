@@ -27,14 +27,14 @@ func LockRecord(ctx iris.Context){
 	var msg string
 	selectedItems:=ctx.FormValue("selectedItem")//获取选中的id
 	if len(selectedItems)>0 {
-		fmt.Println("selectedItems="+selectedItems)
+		//fmt.Println("selectedItems="+selectedItems)
 		Ids:=strings.Split(selectedItems,",")//切割取出每一个id
-		fmt.Println("Ids=",Ids)
+		//fmt.Println("Ids=",Ids)
 		var length=len(Ids)
 		//遍历Ids，挨个做update
 		for i:=0;i<length;i++ {
 			id, _ :=strconv.Atoi(Ids[i])
-			fmt.Println("id=",id)
+			//fmt.Println("id=",id)
 			model.UpdateStatus(id,1)
 		}
 			msg="锁定记录成功！"
@@ -48,14 +48,14 @@ func UnlockRecord(ctx iris.Context){
 	var msg string
 	selectedItems:=ctx.FormValue("selectedItem")//获取选中的id
 	if len(selectedItems)>0 {
-		fmt.Println("selectedItems="+selectedItems)
+		//fmt.Println("selectedItems="+selectedItems)
 		Ids:=strings.Split(selectedItems,",")//切割取出每一个id
-		fmt.Println("Ids=",Ids)
+		//fmt.Println("Ids=",Ids)
 		var length=len(Ids)
 		//遍历Ids，挨个做update
 		for i:=0;i<length;i++ {
 			id, _ :=strconv.Atoi(Ids[i])
-			fmt.Println("id=",id)
+			//fmt.Println("id=",id)
 			model.UpdateStatus(id,0)
 		}
 		msg="解锁记录成功！"

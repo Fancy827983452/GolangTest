@@ -8,7 +8,25 @@
     <title>医疗系统-医生</title>
 </head>
 <body>
-<iframe src="_layout.html" width="100%" frameborder="0" scrolling="0"></iframe>
+<div>
+    <nav id="top" style="background:url('../../File/bg1.jpg') no-repeat center fixed;background-size:100% 100%" >
+        <div class="container">
+            <div class="row" style="background-color: black">
+                <div class="col-md-3" style="margin-top: 10px;">
+                    <span style="font-size:20px;color:ghostwhite;text-shadow: 5px 5px 5px #affff3;"><strong>医院后台管理系统</strong></span>
+                </div>
+
+                <div class="col-md-5 col-md-offset-4">
+                    <ul class="nav navbar-nav"  style="float:right">
+                        <li><a id="doctorCenter"><span class="glyphicon glyphicon-user" id="doctorCenter1"></span> </a></li>
+                        <li><a href="logout" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</div>
 <div class="container">
 
     <div class="col-lg-3">
@@ -16,10 +34,10 @@
             <li class="list-group-item">
                 <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="" />
             </li>
-            <li class="list-group-item"><a href="Doctor.html">病人就诊</a></li>
-            <li class="list-group-item"><a href="DoctorEditInfo.html">修改信息</a></li>
-            <li class="list-group-item"><a href="DoctorEditPassword.html">修改密码</a></li>
-            <li class="list-group-item"><a href="DoctorVisit.html">病历访问</a></li>
+            <li class="list-group-item"><a href="/doctor/viewAppointments">查看预约</a></li>
+            <li class="list-group-item"><a href="/doctor/editInfo">修改信息</a></li>
+            <li class="list-group-item"><a href="/doctor/editPwd">修改密码</a></li>
+            <li class="list-group-item"><a href="/doctor/visitHistory">访问历史</a></li>
         </ul>
     </div>
     <div class="col-md-6 col-md-offset-3">
@@ -27,7 +45,7 @@
             <span style="margin-left: 90px">病人基本信息</span>
                 <div class="form-group" >
                     <label for="username"><span>姓名</span></label>
-                    <div><input class="form-control" id="username" style="width:300px;float: left " readonly><span></span></input></div>
+                    <div><input class="form-control" id="username" style="width:300px;float: left " readonly><span></span></div>
                 </div>
                 <div class="form-group">
                     <label>性别:</label>
@@ -52,16 +70,19 @@
     </div>
     <div class="col-md-7 col-md-offset-2">
         <div class="form-group" style="float: left;margin-left: 30px">
-            <input type="button" class="btn btn-primary" style="width: 120px;" value="查看历史病历" onclick="location='DoctorViewHistoryCase.html'">
+            <input type="button" class="btn btn-primary" style="width: 120px;" value="查看历史病历" onclick="location='patientHistoryCase'">
         </div>
         <div class="form-group" style="float: left;margin-left: 30px;">
-            <input type="button" class="btn btn-primary" style="width: 120px;" value="添加病历" onclick="location='DoctorAddCase.html'">
+            <input type="button" class="btn btn-primary" style="width: 120px;" value="添加病历" onclick="location='addCase'">
         </div>
         <div class="form-group" style="float: left;margin-left: 30px;">
-            <input type="button" class="btn btn-primary" style="width: 120px;" value="查看就诊记录" onclick="location='DoctorTreatmentRecord.html'">
+            <input type="button" class="btn btn-primary" style="width: 120px;" value="查看就诊记录" onclick="location='patientTreatmentHistory'">
         </div>
     </div>
 </div>
+<div hidden>
+    <span id="formValue">{{.currentDoctor}}</span>
+</div>
 </body>
-
+<script type="text/javascript" src="/static/js/doctorCenter.js"></script>
 </html>

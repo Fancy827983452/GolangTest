@@ -8,7 +8,25 @@
     <title>医疗系统-医生</title>
 </head>
 <body>
-<iframe src="_layout.html" width="100%" frameborder="0" scrolling="0"></iframe>
+<div>
+    <nav id="top" style="background:url('../../File/bg1.jpg') no-repeat center fixed;background-size:100% 100%" >
+        <div class="container">
+            <div class="row" style="background-color: black">
+                <div class="col-md-3" style="margin-top: 10px;">
+                    <span style="font-size:20px;color:ghostwhite;text-shadow: 5px 5px 5px #affff3;"><strong>医院后台管理系统</strong></span>
+                </div>
+
+                <div class="col-md-5 col-md-offset-4">
+                    <ul class="nav navbar-nav"  style="float:right">
+                        <li><a id="doctorCenter"><span class="glyphicon glyphicon-user" id="doctorCenter1"></span> </a></li>
+                        <li><a href="logout" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</div>
 <div class="container">
 
     <div class="col-lg-3">
@@ -16,31 +34,31 @@
             <li class="list-group-item">
                 <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="" />
             </li>
-            <li class="list-group-item"><a href="Doctor.html">病人就诊</a></li>
-            <li class="list-group-item"><a href="DoctorEditInfo.html">修改信息</a></li>
-            <li class="list-group-item"><a href="DoctorEditPassword.html">修改密码</a></li>
-            <li class="list-group-item"><a href="DoctorVisit.html">病历访问</a></li>
+            <li class="list-group-item"><a href="/doctor/viewAppointments">查看预约</a></li>
+            <li class="list-group-item"><a href="/doctor/editInfo">修改信息</a></li>
+            <li class="list-group-item"><a href="/doctor/editPwd">修改密码</a></li>
+            <li class="list-group-item"><a href="/doctor/visitHistory">访问历史</a></li>
         </ul>
     </div>
     <div class="col-md-6 col-md-offset-3">
         <div class="form-horizontal" style="width: 80%;">
-            <form>
+            <form id="doctorEditInfoForm" action="editInfoPost" method="post">
+                <input name="doctorKey" id="doctorKey" hidden>
                 <div class="form-group" >
                     <label for="username"><span>姓名</span></label>
-                    <div><label class="form-control" id="username" style="width:300px;float: left "><span></span></label></div>
-                    <div><span style="color:red;float: left;margin-left: 10px;">*</span></div>
+                    <input name="username" id="username" class="form-control" style="width:300px" readonly>
                 </div>
                 <div class="form-group">
                     <label>性别:</label>
                     <div>
                         <div class="radio" style="float: left">
                             <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> 男
+                                <input type="radio" name="sex" id="sex1" value="0" disabled> 男
                             </label>
                         </div>
                         <div class="radio" style="float: left;margin-left: 50px;">
                             <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> 女
+                                <input type="radio" name="sex" id="sex2" value="1" disabled> 女
                             </label>
                         </div>
                     </div>
@@ -51,15 +69,23 @@
                     <input type="tel" name="tel" id="tel" class="form-control" style="width:300px">
                 </div>
                 <div class="form-group">
-                    <label for="birthdate">出生日期:</label>
-                    <input type="date" name="birthdate" id="birthdate" class="form-control" style="width:300px">
+                    <label for="idnum">身份证号:</label>
+                    <input type="text" name="idnum" id="idnum" class="form-control" style="width:300px" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="loaction">所属医院:</label>
-                    <input name="loaction" id="loaction" class="form-control" value="" style="width:300px">
+                    <label for="birthdate">出生日期:</label>
+                    <input type="text" name="birthdate" id="birthdate" class="form-control" style="width:300px" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="hospitalName">所属医院:</label>
+                    <input name="hospitalName" id="hospitalName" class="form-control" value="" style="width:300px" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="DepName">所属科室:</label>
+                    <input name="DepName" id="DepName" class="form-control" value="" style="width:300px" readonly>
                 </div>
                 <div class="form-group" style="float: left;margin-left: 50px;">
-                    <input type="submit" class="btn btn-primary" value="提交">
+                    <button type="submit" class="btn btn-primary">提交</button>
                 </div>
                 <div class="form-group" style="float: left;margin-left: 50px;">
                     <input type="reset" class="btn btn-primary" value="重置">
@@ -68,14 +94,10 @@
         </div>
     </div>
 </div>
+<div hidden>
+    <span id="formValue">{{.currentDoctor}}</span>
+</div>
 </body>
-<script>
-    $(function(){
-        var date_now = new Date();
-        var year = date_now.getFullYear();
-        var month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
-        var date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
-        $("#birthdate").attr("max",year+"-"+month+"-"+date);
-    })
-</script>
+{{/*<script type="text/javascript" src="/static/js/doctorCenter.js"></script>*/}}
+<script type="text/javascript" src="/static/js/doctorEditInfo.js"></script>
 </html>

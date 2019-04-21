@@ -140,7 +140,7 @@ function modal() {
 
     document.getElementById("modal_name").innerText=obj.Name;
     //根据出生日期计算周岁年龄
-    var birth=obj.BirthDate.substring(0,10);
+    var birth=obj.BirthDate;
     var age=jsGetAge(birth);
     document.getElementById("modal_age").innerText=age;
     if(obj.Gender==0)
@@ -165,6 +165,23 @@ function modal() {
             document.getElementById("modal_time").innerText = illcase[i].Time;
         }
     }
+}
+
+function checkSelected() {
+    //判断是否选择记录
+    var check=document.getElementsByName("check");
+    var flag=false;
+    var count=0;
+    for(var c=0;c<check.length;c++) {
+        if (check[c].checked == true) {
+            count++;
+        }
+    }
+    if(count>0)
+        flag = true;
+    else
+        alert("请至少选择一条记录！");
+    return true;
 }
 
 function checkSelectedOne() {

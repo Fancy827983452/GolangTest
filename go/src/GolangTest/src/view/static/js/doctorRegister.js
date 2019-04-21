@@ -7,7 +7,7 @@
 // })
 
 $(document).ready(function () {
-    $("#registerForm").bootstrapValidator({
+    $("#doctorRegisterForm").bootstrapValidator({
         message: '通用的验证失败消息',
         feedbackIcons:{
             valid:'glyphicon glyphicon-ok',
@@ -15,16 +15,16 @@ $(document).ready(function () {
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            username: {
+            doctorname: {
                 validators: {
                     notEmpty: {
-                        message: '用户名不能为空！'
+                        message: '姓名不能为空！'
                     },
                     stringLength: {
                         /*长度提示*/
                         min: 1,
                         max: 50,
-                        message: '用户名不能超过50个字符（或25个中文字符）'
+                        message: '姓名不能超过50个字符（或25个中文字符）'
                     }
                 }
             },
@@ -122,21 +122,31 @@ $(document).ready(function () {
                     }
                 }
             },
-            location:{
+            hospitalId:{
                 validators:{
                     notEmpty:{
-                        message:'家庭住址不能为空'
+                        message:'医院代码不能为空'
                     }
-                },
-                stringLength:{
-                    max:200,
-                    message:'家庭住址不能超过200个字符（或100个中文字符）'
                 }
+            },
+            departmentId:{
+                validators:{
+                    notEmpty:{
+                        message:'科室代码不能为空'
+                    }
+                }
+            },
+            title:{
+                validators:{
+                    notEmpty:{
+                        message:'职称不能为空'
+                    }
+                }
+            }
         }
-    }
-});
+    });
 
     $("#validateBtn").click(function(){
-        $("#registerForm").bootstrapValidator('validate');
+        $("#doctorRegisterForm").bootstrapValidator('validate');
     });
 });

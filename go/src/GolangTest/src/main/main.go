@@ -23,10 +23,8 @@ func main() {
 
 	app.Get("/login", controller.Login)
 	app.Post("/loginPost", controller.LoginPost)
-
 	app.Get("/register", controller.Register)
 	app.Post("/registerPost", controller.RegisterPost)
-
 	app.Get("/logout", controller.Logout)
 
 	//app.Party 定义路由组,把相同路由组的放在一个区块(第一个参数设置路由相同的前缀,第二个参数为中间件)
@@ -44,7 +42,28 @@ func main() {
 
 	doctor:=app.Party("doctor")
 	{
-		doctor.Get("/doctor",controller.Doctor)
+		doctor.Get("/register",controller.DoctorRegister)	//注册在职医生
+		doctor.Post("/registerPost",controller.DoctorRegisterPost)
+		doctor.Get("/login",controller.DoctorLogin)	//医生登陆
+		doctor.Post("/loginPost",controller.DoctorLoginPost)
+		//doctor.Get("/viewAppointments")//查看所有当前挂号预约的信息
+		doctor.Get("/editInfo",controller.DoctorEditInfo)//修改信息
+		doctor.Post("/editInfoPost",controller.DoctorEditInfoPost)
+		doctor.Get("/editPwd",controller.DoctorEditPwd)//修改密码
+		//doctor.Post("/editPwdPost",controller.DoctorEditPwdPost)
+		doctor.Get("/visitHistory",controller.VisitHistory)//查看当前医生访问过的病人历史记录
+		doctor.Get("/patientDetails",controller.PatientDetails)	//查看病人详细信息
+		doctor.Get("/patientHistoryCase",controller.PatientHistoryCase)	//查看病人历史病历
+		doctor.Get("/addCase",controller.AddCase)	//添加病例
+		doctor.Get("/patientTreatmentHistory",controller.PatientTreatmentHistory)	//查看病人就诊记录
+		doctor.Get("/logout", controller.Logout)
+	}
+
+	hospital:=app.Party("hospital")
+	{
+		hospital.Get("/login",controller.HospitalLogin)
+		hospital.Get("/management",controller.HospitalManagement)
+		hospital.Get("/verifydoctor",controller.VerifyDoctor)
 	}
 
 	// 为特定HTTP错误注册自定义处理程序方法

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>区块链医疗系统-用户注册</title>
+    <title>区块链医疗系统-注册在职医生</title>
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -19,49 +19,30 @@
     <nav id="top" style="background:url('../../File/bg1.jpg') no-repeat center fixed;background-size:100% 100%" >
         <div class="container">
             <div class="row" style="background-color: black">
-                <div class="col-md-3" style="margin-top: 10px;">
-                    <span style="font-size:20px;color:ghostwhite;text-shadow: 5px 5px 5px #affff3;"><strong>区块链医疗系统</strong></span>
+                <div class="col-md-3" style="margin-top: 15px;height: 50px;float: left">
+                    <span style="font-size:20px;color:ghostwhite;text-shadow: 5px 5px 5px #affff3;"><strong>医院后台管理系统</strong></span>
                 </div>
-
-                <div class="col-md-5 col-md-offset-4">
+                <div class="col-md-5 col-md-offset-4" style="margin-top: 8px;height: 50px;float: left">
                     <ul class="nav navbar-nav"  style="float:right">
-                        <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
-                        <li><a href="/register"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                        <li><a href="/doctor/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                        <li><a href="/doctor/register"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
                     </ul>
                 </div>
-
             </div>
         </div>
     </nav>
-    <div class="container">
-        <div class="row">
-            <nav id="dhl" class="navbar navbar-default navbar-static-top" role="navigation">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="~/Home/Index">首页</a>
-                    </div>
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="~/Home/ContactUs">联系我们</a>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </div>
 </div>
 <div id="main" class="container">
-    <div class="login">
+    <div class="col-md-6 col-md-offset-3">
+    <div class="register">
         <div class="row">
-            <div class="col-md-4">
-                <img src="./image/timg.gif" alt="" width="640" height="400" style="margin-left:-40px;margin-top:30px;">
-            </div>
-            <div class="col-md-5 form-register" style="margin-top: 50px">
+            <div style="margin-top: 50px">
                 <div>
-                    <form id="registerForm" class="form-horizontal" action="/registerPost" method="post">
+                    <form class="form-horizontal" id="doctorRegisterForm" action="/doctor/registerPost" method="post">
                         <div class="form-group">
-                            <label for="username" class="col-sm-3 control-label">用户名</label>
+                            <label for="doctorname" class="col-sm-3 control-label">姓名</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="username"
-                                       name="username" placeholder="用户名">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="姓名">
                             </div>
                         </div>
                         <div class="form-group">
@@ -82,57 +63,64 @@
                         <div class="form-group">
                             <label for="birthdata" class="col-sm-3 control-label">出生日期:</label>
                             <div class="col-sm-9">
-                                {{/*<input type="date" name="birthdate" id="birthdate" class="form-control">*/}}
+                            {{/*<input type="date" name="birthdate" id="birthdate" class="form-control">*/}}
                                 <input type="text" class="form-control" name="birthdate" id="birthdate" placeholder="出生日期">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="username" class="col-sm-3 control-label">身份证号</label>
+                            <label for="idnumber" class="col-sm-3 control-label">身份证号</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="idnumber"
-                                       name="idnumber" placeholder="身份证号">
+                                <input type="text" class="form-control" id="idnumber" name="idnumber" placeholder="身份证号">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="username" class="col-sm-3 control-label">联系方式</label>
+                            <label for="telephone" class="col-sm-3 control-label">联系方式</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="telephone"
-                                       name="telephone" placeholder="联系方式">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="loaction" class="col-sm-3 control-label">家庭住址:</label>
-                            <div class="col-sm-9">
-                                <input name="location" id="location" class="form-control" value="" placeholder="家庭住址">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="username" class="col-sm-3 control-label">密码</label>
-                            <div class="col-sm-9">
-                                <input type="password" class="form-control" id="password"
-                                       name="password" placeholder="密码">
+                                <input type="text" class="form-control" id="telephone" name="telephone" placeholder="联系方式">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="username" class="col-sm-3 control-label">确认密码</label>
+                            <label for="title" class="col-sm-3 control-label">职称</label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control"
-                                       id="confirmPassword" name="confirmPassword" placeholder="确认密码">
+                                <select class="form-control" id="title" name="title">
+                                    <option value="0" selected>医士、医师、住院医师</option>
+                                    <option value="1">主治医师</option>
+                                    <option value="2">副主任医师</option>
+                                    <option value="3">主任医师</option>
+                                </select>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <div class="col-sm-offset-4 col-sm-7" >
+                            <label for="hospitalId" class="col-sm-3 control-label">医院代码</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="hospitalId" name="hospitalId" placeholder="医院代码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="departmentId" class="col-sm-3 control-label">科室代码</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="departmentId" name="departmentId" placeholder="科室代码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword" class="col-sm-3 control-label">确认密码</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="确认密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-5 col-sm-7" >
                                 <div style="float: left">
-                                    <button type="submit" class="btn btn-primary login-input"
-                                            name="register" id="register">注册</button>
+                                    <button type="submit" class="btn btn-primary login-input" name="submit" >注册</button>
                                 </div>
                                 <div style="float: left;margin-left: 50px;">
-                                    <input type="reset" class="btn btn-primary login-input" value="重置"
-                                           name="cancel">
+                                    <input type="reset" class="btn btn-primary login-input" value="取消" name="cancel">
                                 </div>
                             </div>
                         </div>
@@ -140,9 +128,9 @@
                 </div>
             </div>
         </div>
-
+    </div>
     </div>
 </div>
 </body>
-<script type="text/javascript" src="/static/js/register.js"></script>
+<script type="text/javascript" src="/static/js/doctorRegister.js"></script>
 </html>
