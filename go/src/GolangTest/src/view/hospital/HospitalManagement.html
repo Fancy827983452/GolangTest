@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>区块链医疗系统-医院注册</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div>
+    <nav id="top" style="background:url('../../File/bg1.jpg') no-repeat center fixed;background-size:100% 100%" >
+        <div class="container">
+            <div class="row" style="background-color: black">
+                <div class="col-md-3" style="margin-top: 15px;height: 50px" align="center">
+                    <span style="font-size:20px;color:ghostwhite;text-shadow: 5px 5px 5px #affff3;"><strong>区块链医疗系统--超级管理</strong></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div id="main" class="container" align="center">
+    <div class="login">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="./image/timg.gif" alt="" width="640" height="400" style="margin-left:-40px;margin-top:30px;">
+            </div>
+            <div class="col-md-5 form-register" style="margin-top: 50px">
+                <div>
+                    <form class="form-horizontal" id="form" action=""
+                          method="post">
+                        <div class="form-group">
+                            <label for="hospitalname" class="col-sm-3 control-label">医院名</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="hospitalname"
+                                       name="hospitalname" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="detailinfo" class="col-sm-3 control-label">医院详细信息</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="detailinfo" name="detailinfo" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-sm-3 control-label">医院地址</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="address"
+                                       name="address" placeholder="医院地址">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="grade" class="col-sm-3 control-label">等级</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="grade"
+                                       name="grade" placeholder="等级">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="password"
+                                       name="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword" class="col-sm-3 control-label">确认密码</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control"
+                                       id="confirmPassword" name="confirmPassword" placeholder="确认密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-7" >
+                                <div style="float: left">
+                                    <input type="submit" class="btn btn-primary login-input" value="注册"
+                                           name="submit" >
+                                </div>
+                                <div style="float: left;margin-left: 50px;">
+                                    <input type="reset" class="btn btn-primary login-input" value="取消"
+                                           name="cancel">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

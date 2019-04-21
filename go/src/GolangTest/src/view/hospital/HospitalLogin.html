@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>区块链医疗系统-欢迎登录</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+<div>
+    <nav id="top" style="background:url('../../File/bg1.jpg') no-repeat center fixed;background-size:100% 100%" >
+        <div class="container">
+            <div class="row" style="background-color: black">
+                <div class="col-md-4" style="margin-top: 15px;height: 50px">
+                    <span style="font-size:20px;color:ghostwhite;text-shadow: 5px 5px 5px #affff3;"><strong>区块链医疗系统--医院管理系统</strong></span>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</div>
+<div id="main" class="container">
+    <div class="login">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="./image/timg.gif" alt="" width="640" height="400" style="margin-left:-40px;margin-top:30px;">
+            </div>
+            <div class="col-md-5"style="margin-top: 100px">
+                <div>
+                    <!-- <h2 class="login-h2">登录</h2> -->
+                    <form class="form-horizontal" id="form2" action="/loginPost" method="post">
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="username"
+                                       name="username" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-2 control-label">密码</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password"
+                                       name="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div style="margin-left:80px;color:red;">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-8" >
+                                <div style="float: left">
+                                    <input type="submit" class="btn btn-primary login-input" value="登录"
+                                           name="submit" onclick="return checkNull()">
+                                </div>
+                                <div style="float: left;margin-left: 50px;">
+                                    <input type="reset" class="btn btn-primary login-input" value="取消"
+                                           name="cancel">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function checkNull() {
+        var username = document.getElementById("username").value;
+        var pwd = document.getElementById("password").value;
+        if (username.length == 0 || pwd.length == 0) {
+            alert("用户名或密码不能为空！");
+            return false;
+        }
+    }
+</script>
+</html>
