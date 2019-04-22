@@ -20,7 +20,6 @@ type MedicalRecord struct {
 	Status      int
 }
 
-// Users is struct
 type MedicalRecords struct {
 	Items    []*MedicalRecord
 }

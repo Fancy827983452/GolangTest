@@ -15,10 +15,14 @@ type Doctor struct {
 	DeptId		 int	//科室代码
 	DeptName     string
 	Title     int    	//职称(0：初级职称；1：中级职称；2：副高级职称；3：高级职称)
-	Status    int 		//状态（0：待审核；1：离线；2：空闲；3：忙碌；4：挂起）
+	Status    int 		//状态（-1：审核不通过；0：待审核；1：离线；2：空闲；3：忙碌；4：挂起）
 	Role      int       //角色（0：普通医生；1：管理员）
 	Aec_Key   string    //信息加密的对称加密秘钥
 	Addr 	  string    //记录的地址
+}
+
+type Doctors struct {
+	Items    []*Doctor
 }
 
 func DoctorRegister(doctor Doctor) (bool, error){
@@ -96,4 +100,22 @@ func GetDoctorInfoByPublicKey(doctor Doctor)(*Doctor, error){
 		err := db.QueryRow(sql,doctor.DoctorKey).Scan(&doctor.DoctorKey,&doctor.Name,&doctor.BirthDate,&doctor.Gender,&doctor.IdNum,&doctor.PhoneNum,&doctor.HospitalId,&doctor.HospitalName,&doctor.DeptId,&doctor.DeptName,&doctor.Password,&doctor.Aec_Key,&doctor.Addr,&doctor.Title,&doctor.Status,&doctor.Role)
 		util.CheckErr(err)
 		return &doctor, err
+}
+
+//读取数据库中所有待审核的医生
+func GetUnverifiedDoctors(hospitalId int) *Doctors {
+	var result Doctors
+	result.Items = []*Doctor{}
+	query := "select name,birthdate,gender,id_number,phone_number,department_name,title from tbl_doctor " +
+		"join tbl_medical_institution_department on tbl_medical_institution_department.department_id=tbl_doctor.department_id " +
+		"where tbl_doctor.medical_institution_id='"+string(hospitalId)+"'"
+	rows, err := db.Query(query)
+	util.CheckErr(err)
+	for rows.Next() {
+		item := Doctor{}
+		err = rows.Scan(&item.Name,&item.BirthDate,&item.Gender,&item.IdNum,&item.PhoneNum,&item.DeptName,&item.Title)
+		util.CheckErr(err)
+		result.Items = append(result.Items, &item)
+	}
+	return &result
 }
