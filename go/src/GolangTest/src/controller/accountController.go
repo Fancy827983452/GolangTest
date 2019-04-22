@@ -7,7 +7,6 @@ import (
 	"encoding/hex"
 	"github.com/kataras/iris"
 	"strconv"
-	"fmt"
 )
 
 //用户
@@ -199,7 +198,6 @@ func HospitalLoginPost(ctx iris.Context){
 	hospital.Name=ctx.FormValue("username")
 	hospital.Password=ctx.FormValue("password")
 	hospital.Password = algorithm.GetMd5String(hospital.Password)//MD5加密password
-	fmt.Println(hospital.Name+"--"+hospital.Password)
 
 	count,_:=model.CheckHospitalLogin(hospital)//判断数据库中是否存在该医院
 	if count==0{

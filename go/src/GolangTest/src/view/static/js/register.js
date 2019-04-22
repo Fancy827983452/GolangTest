@@ -49,7 +49,7 @@ $(document).ready(function () {
                 message: '不合法的密码',
                 validators: {
                     notEmpty: {
-                        message: '密码不能为空！'
+                        message: '确认密码不能为空！'
                     },
                     stringLength: {
                         min: 6,

@@ -72,10 +72,10 @@ func main() {
 		hospital.Post("/loginPost",controller.HospitalLoginPost)
 		hospital.Get("/register",controller.HospitalRegister)
 		hospital.Post("/registerPost",controller.HospitalRegisterPost)
-		hospital.Get("/verifyDoctor",controller.VerifyDoctor)
-		hospital.Get("/viewDoctors",controller.ViewDoctors)
-		hospital.Get("/departmentManagement",controller.HospitalDepartmentManagement)
-
+		hospital.Get("/verifyDoctor",controller.VerifyDoctor)//审核医生注册申请
+		hospital.Get("/viewDoctors",controller.ViewDoctors)//查看所有医生
+		hospital.Get("/departmentManagement",controller.HospitalDepartmentManagement)//科室管理
+		hospital.Get("/logout", controller.Logout)
 	}
 
 	// 为特定HTTP错误注册自定义处理程序方法
