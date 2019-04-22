@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/static/validator/vendor/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/validator/dist/css/bootstrapValidator.css"/>
+    <script type="text/javascript" src="/static/validator/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/static/validator/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/validator/dist/js/bootstrapValidator.js"></script>
 </head>
 <body>
 <div>
@@ -28,17 +34,16 @@
             </div>
             <div class="col-md-5 form-register" style="margin-top: 50px">
                 <div>
-                    <form class="form-horizontal" id="form" action=""
-                          method="post">
+                    <form class="form-horizontal" id="hospitalRegisterForm" action="registerPost" method="post">
                         <div class="form-group">
                             <label for="hospitalname" class="col-sm-3 control-label">医院名</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="hospitalname"
-                                       name="hospitalname" placeholder="用户名">
+                                       name="hospitalname" placeholder="医院名">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="detailinfo" class="col-sm-3 control-label">医院详细信息</label>
+                            <label for="detailinfo" class="col-sm-3 control-label">医院简介</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" id="detailinfo" name="detailinfo" rows="4"></textarea>
                             </div>
@@ -53,8 +58,17 @@
                         <div class="form-group">
                             <label for="grade" class="col-sm-3 control-label">等级</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="grade"
-                                       name="grade" placeholder="等级">
+                                <select class="form-control" id="grade" name="grade">
+                                    <option value="三级甲等">三级甲等</option>
+                                    <option value="三级乙等">三级乙等</option>
+                                    <option value="三级丙等">三级丙等</option>
+                                    <option value="二级甲等">二级甲等</option>
+                                    <option value="二级乙等">二级乙等</option>
+                                    <option value="二级丙等">二级丙等</option>
+                                    <option value="一级甲等">一级甲等</option>
+                                    <option value="一级乙等">一级乙等</option>
+                                    <option value="一级丙等">一级丙等</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -74,12 +88,10 @@
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-7" >
                                 <div style="float: left">
-                                    <input type="submit" class="btn btn-primary login-input" value="注册"
-                                           name="submit" >
+                                    <button type="submit" class="btn btn-primary login-input">注册</button>
                                 </div>
                                 <div style="float: left;margin-left: 50px;">
-                                    <input type="reset" class="btn btn-primary login-input" value="取消"
-                                           name="cancel">
+                                    <input type="reset" class="btn btn-primary login-input" value="取消"name="cancel">
                                 </div>
                             </div>
                         </div>
@@ -87,8 +99,8 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 </body>
+<script type="text/javascript" src="/static/js/hospitalRegister.js"></script>
 </html>

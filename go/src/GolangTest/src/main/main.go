@@ -52,7 +52,7 @@ func main() {
 		doctor.Get("/editInfo",controller.DoctorEditInfo)//修改信息
 		doctor.Post("/editInfoPost",controller.DoctorEditInfoPost)
 		doctor.Get("/editPwd",controller.DoctorEditPwd)//修改密码
-		//doctor.Post("/editPwdPost",controller.DoctorEditPwdPost)
+		doctor.Post("/editPwdPost",controller.DoctorEditPwdPost)
 		doctor.Get("/visitHistory",controller.VisitHistory)//查看当前医生访问过的病人历史记录
 		doctor.Get("/patientDetails",controller.PatientDetails)	//查看病人详细信息
 		doctor.Get("/patientHistoryCase",controller.PatientHistoryCase)	//查看病人历史病历
@@ -69,8 +69,13 @@ func main() {
 	{
 		hospital.Get("/",controller.HospitalLogin)
 		hospital.Get("/login",controller.HospitalLogin)
-		hospital.Get("/management",controller.HospitalManagement)
-		hospital.Get("/verifydoctor",controller.VerifyDoctor)
+		hospital.Post("/loginPost",controller.HospitalLoginPost)
+		hospital.Get("/register",controller.HospitalRegister)
+		hospital.Post("/registerPost",controller.HospitalRegisterPost)
+		hospital.Get("/verifyDoctor",controller.VerifyDoctor)
+		hospital.Get("/viewDoctors",controller.ViewDoctors)
+		hospital.Get("/departmentManagement",controller.HospitalDepartmentManagement)
+
 	}
 
 	// 为特定HTTP错误注册自定义处理程序方法

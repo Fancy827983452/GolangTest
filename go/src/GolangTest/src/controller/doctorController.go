@@ -83,6 +83,31 @@ func DoctorEditPwd(ctx iris.Context){
 	ctx.View("doctor/DoctorEditPassword.html")
 }
 
+func DoctorEditPwdPost(ctx iris.Context)  {
+	var doctor model.Doctor
+	var msg string
+	doctor.DoctorKey = ctx.FormValue("doctorKey")
+	doctor.Password=ctx.FormValue("password_old")
+	doctor.Password = algorithm.GetMd5String(doctor.Password)
+	user, _ :=model.GetDoctorInfoByPublicKey(doctor)
+
+	if doctor.Password!=user.Password{
+		msg="原密码错误！"
+	}else {
+		doctor.Password=ctx.FormValue("password_new")
+		doctor.Password = algorithm.GetMd5String(doctor.Password)
+		result, _ :=model.UpdateDoctorPwd(doctor)
+		if(result>0){
+			msg="更改密码成功！请重新登录！"
+			sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
+			ctx.HTML("<script>alert('"+msg+"');window.location.href='login';</script>")
+		} else{
+			msg="更改密码失败！"
+		}
+	}
+	ctx.HTML("<script>alert('"+msg+"');window.history.back(-1);</script>")
+}
+
 func VisitHistory(ctx iris.Context){
 	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
 	currentDoctor:=session.Get("currentDoctor")

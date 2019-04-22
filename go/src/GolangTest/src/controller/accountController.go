@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"github.com/kataras/iris"
 	"strconv"
+	"fmt"
 )
 
 //用户
@@ -126,7 +127,6 @@ func DoctorRegisterPost(ctx iris.Context){
 			//公钥
 			privateKey,publicKey,_:=algorithm.GetKey();
 			doctor.DoctorKey=hex.EncodeToString(algorithm.PublicKeyToByte(publicKey))//设置user_key字段为公钥
-			pk := algorithm.GetMd5String(doctor.DoctorKey)//MD5加密公钥
 			//生成随机ACE秘钥
 			doctor.Aec_Key=algorithm.GetRandomString(16)
 			//使用AEC算法对称加密数据
@@ -141,6 +141,7 @@ func DoctorRegisterPost(ctx iris.Context){
 			util.CheckErr(err)
 			if result==true{
 				msg="注册成功！请等待医院方审核！"
+				pk := algorithm.GetMd5String(doctor.DoctorKey)//MD5加密公钥
 				algorithm.SavePrivateKey("privateKey_"+pk,privateKey)//保存私钥到本地
 			}else {
 				msg="注册失败！"
@@ -184,6 +185,80 @@ func DoctorLoginPost(ctx iris.Context){
 			session.Set("AEC_KEY",doctor.Aec_Key)
 			ctx.HTML("<script>alert('"+msg+"');window.location.href='main';</script>")
 		}
+	}
+}
+
+//医院
+func HospitalLogin(ctx iris.Context)  {
+	ctx.View("hospital/HospitalLogin.html")
+}
+
+func HospitalLoginPost(ctx iris.Context){
+	var hospital model.Hospital
+	var msg string
+	hospital.Name=ctx.FormValue("username")
+	hospital.Password=ctx.FormValue("password")
+	hospital.Password = algorithm.GetMd5String(hospital.Password)//MD5加密password
+	fmt.Println(hospital.Name+"--"+hospital.Password)
+
+	count,_:=model.CheckHospitalLogin(hospital)//判断数据库中是否存在该医院
+	if count==0{
+		msg="用户名或密码错误！"
+		ctx.HTML("<script>alert('"+msg+"');window.history.back(-1);</script>")
+	} else {
+		h,err := model.HospitalLogin(hospital);
+		util.CheckErr(err)
+		if h.Status==0{
+			msg="请耐心等待管理员审核！"
+			ctx.HTML("<script>alert('"+msg+"');window.history.back(-1);</script>")
+		}else {
+			msg="欢迎，"+h.Name+"！"
+			//获取session管理器
+			session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+			session.Set("currentHospital",util.ParseJson(h))
+			ctx.HTML("<script>alert('"+msg+"');window.location.href='verifyDoctor';</script>")
+		}
+	}
+}
+
+func HospitalRegister(ctx iris.Context)  {
+	ctx.View("hospital/HospitalManagement.html")
+}
+
+func HospitalRegisterPost(ctx iris.Context)  {
+	var hospital model.Hospital
+	var msg string
+	hospital.Name=ctx.FormValue("hospitalname")
+	hospital.Info=ctx.FormValue("detailinfo")
+	hospital.Location=ctx.FormValue("address")
+	hospital.Grade=ctx.FormValue("grade")
+	hospital.Password=ctx.FormValue("password")
+
+	//判断该医院名是否已注册过
+	count, _ :=model.CheckHospitalName(hospital)
+	if count>0{
+		msg="改医院名已注册过！";
+		ctx.HTML("<script>alert('"+msg+"');window.history.back(-1);</script>")
+	}else {
+		//公钥
+		privateKey,publicKey,_:=algorithm.GetKey();
+		//base58地址
+		hospital.PublicKey=hex.EncodeToString(algorithm.PublicKeyToByte(publicKey))
+		hospital.Addr=hex.EncodeToString(algorithm.GetAddress(hospital.PublicKey))//base58根据公钥生成地址
+		//MD5加密密码
+		hospital.Password = algorithm.GetMd5String(hospital.Password)
+		hospital.Status=0;
+		//插入数据库，返回操作结果（true或false）
+		result, err := model.HospitalRegister(hospital)
+		util.CheckErr(err)
+		if result==true{
+			msg="注册成功！请等待管理员审核！"
+			pk := algorithm.GetMd5String(hospital.PublicKey)//MD5加密公钥
+			algorithm.SavePrivateKey("privateKey_"+pk,privateKey)//保存私钥到本地
+		}else {
+			msg="注册失败！"
+		}
+		ctx.HTML("<script>alert('"+msg+"');window.history.back(-1);</script>")
 	}
 }
 

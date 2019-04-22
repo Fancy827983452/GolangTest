@@ -69,9 +69,19 @@ func DoctorLogin(doctor Doctor)(*Doctor, error){
 	return &doctor, err
 }
 
+//修改个人信息
 func UpdateDoctotInfo(doctor Doctor)(int64, error){
 	sql :="update tbl_doctor set phone_number=? where doctor_key=?"
 	res, err := db.Exec(sql,doctor.PhoneNum,doctor.DoctorKey)
+	util.CheckErr(err)
+	result, err := res.RowsAffected()
+	return result, nil
+}
+
+//修改密码
+func UpdateDoctorPwd(doctor Doctor)(int64, error){
+	sql :="update tbl_doctor set password=? where doctor_key=?"
+	res, err := db.Exec(sql,doctor.Password,doctor.DoctorKey)
 	util.CheckErr(err)
 	result, err := res.RowsAffected()
 	return result, nil
