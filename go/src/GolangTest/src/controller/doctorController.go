@@ -8,6 +8,34 @@ import (
 	"util"
 )
 
+func DoctorMain(ctx iris.Context){
+	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+	currentDoctor:=session.Get("currentDoctor")
+	ctx.ViewData("currentDoctor",currentDoctor)
+	ctx.View("doctor/DoctorMain.html")
+}
+
+func DepartmentManagement(ctx iris.Context){
+	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+	currentDoctor:=session.Get("currentDoctor")
+	ctx.ViewData("currentDoctor",currentDoctor)
+	ctx.View("doctor/DoctorDepartmentManagement.html")
+}
+
+func ViewDepartmentArrangement(ctx iris.Context){
+	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+	currentDoctor:=session.Get("currentDoctor")
+	ctx.ViewData("currentDoctor",currentDoctor)
+	ctx.View("doctor/DoctorViewAllWorktime.html")
+}
+
+func SetAppointmentNum(ctx iris.Context){
+	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+	currentDoctor:=session.Get("currentDoctor")
+	ctx.ViewData("currentDoctor",currentDoctor)
+	ctx.View("doctor/DoctorSetAppointmentNumber.html")
+}
+
 func PatientDetails(ctx iris.Context){
 	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
 	currentDoctor:=session.Get("currentDoctor")
@@ -53,13 +81,6 @@ func DoctorEditPwd(ctx iris.Context){
 	currentDoctor:=session.Get("currentDoctor")
 	ctx.ViewData("currentDoctor",currentDoctor)
 	ctx.View("doctor/DoctorEditPassword.html")
-}
-
-func ViewAppointments(ctx iris.Context){
-	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
-	currentDoctor:=session.Get("currentDoctor")
-	ctx.ViewData("currentDoctor",currentDoctor)
-	ctx.View("doctor/#.html")
 }
 
 func VisitHistory(ctx iris.Context){

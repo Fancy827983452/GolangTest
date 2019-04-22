@@ -182,7 +182,7 @@ func DoctorLoginPost(ctx iris.Context){
 			//doctor.BirthDate=string(algorithm.AEC_CRT_Crypt(birth,[]byte(doctor.Aec_Key)))
 			session.Set("currentDoctor",util.ParseJson(doctor))
 			session.Set("AEC_KEY",doctor.Aec_Key)
-			ctx.HTML("<script>alert('"+msg+"');window.location.href='patientDetails';</script>")
+			ctx.HTML("<script>alert('"+msg+"');window.location.href='main';</script>")
 		}
 	}
 }

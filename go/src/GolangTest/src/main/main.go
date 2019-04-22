@@ -21,6 +21,7 @@ func main() {
 		//ctx.Writef("%s %s is %d years old and comes from %s", user.Firstname, user.Lastname, user.Age, user.City)
 	})
 
+	app.Get("/", controller.Login)
 	app.Get("/login", controller.Login)
 	app.Post("/loginPost", controller.LoginPost)
 	app.Get("/register", controller.Register)
@@ -42,11 +43,12 @@ func main() {
 
 	doctor:=app.Party("doctor")
 	{
+		doctor.Get("/",controller.DoctorLogin)	//医生登陆
 		doctor.Get("/register",controller.DoctorRegister)	//注册在职医生
 		doctor.Post("/registerPost",controller.DoctorRegisterPost)
 		doctor.Get("/login",controller.DoctorLogin)	//医生登陆
 		doctor.Post("/loginPost",controller.DoctorLoginPost)
-		//doctor.Get("/viewAppointments")//查看所有当前挂号预约的信息
+		doctor.Get("/main",controller.DoctorMain)//医生主界面，包含查看所有当前挂号预约的信息
 		doctor.Get("/editInfo",controller.DoctorEditInfo)//修改信息
 		doctor.Post("/editInfoPost",controller.DoctorEditInfoPost)
 		doctor.Get("/editPwd",controller.DoctorEditPwd)//修改密码
@@ -56,11 +58,16 @@ func main() {
 		doctor.Get("/patientHistoryCase",controller.PatientHistoryCase)	//查看病人历史病历
 		doctor.Get("/addCase",controller.AddCase)	//添加病例
 		doctor.Get("/patientTreatmentHistory",controller.PatientTreatmentHistory)	//查看病人就诊记录
+		doctor.Get("/departmentManagement",controller.DepartmentManagement)//科室管理员
+		doctor.Get("/viewArrangement",controller.ViewDepartmentArrangement)
+		doctor.Get("/setAppointmentNum",controller.SetAppointmentNum)
+
 		doctor.Get("/logout", controller.Logout)
 	}
 
 	hospital:=app.Party("hospital")
 	{
+		hospital.Get("/",controller.HospitalLogin)
 		hospital.Get("/login",controller.HospitalLogin)
 		hospital.Get("/management",controller.HospitalManagement)
 		hospital.Get("/verifydoctor",controller.VerifyDoctor)
