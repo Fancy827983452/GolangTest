@@ -8,7 +8,7 @@
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body onload="loading()">
 <div>
     <nav id="top" style="background:url('../../File/bg1.jpg') no-repeat center fixed;background-size:100% 100%" >
         <div class="container">
@@ -50,10 +50,11 @@
                         <th>医生姓名</th>
                         <th>性别</th>
                         <th>年龄</th>
-                        <th>身份证号</th>
-                        <th>手机号</th>
+                        {{/*<th>身份证号</th>*/}}
+                        {{/*<th>手机号</th>*/}}
                         <th>科室</th>
                         <th>职称</th>
+                        <th>状态</th>
                     </tr>
                     </thead>
                     <tbody id="tbody">
@@ -74,11 +75,13 @@
         </div>
     </div>
 </div>
+{{/*<span id="doctors">{{.doctors}}</span>*/}}
 <div hidden>
     <span id="formValue">{{.currentHospital}}</span>
     <span id="doctors">{{.doctors}}</span>
 </div>
 </body>
-<script type="text/javascript" src="/static/js/hospitalCenter.js"></script>
-<script type="text/javascript" src="/static/js/hospitalVerifyDoctors.js"></script>
+{{/*<script type="text/javascript" src="/static/js/hospitalCenter.js"></script>*/}}
+{{/*让浏览器及时刷新外部js*/}}
+<script type="text/javascript" src="/static/js/hospitalVerifyDoctors.js?ver=1"></script>
 </html>

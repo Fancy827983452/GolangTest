@@ -1,47 +1,76 @@
-window.onload=function () {
-    var jsonTxt=document.getElementById("formValue").innerText;
-    var obj=JSON.parse(jsonTxt);
-    document.getElementById("publicKey").value=obj.PublicKey;
+//由于使用confirm弹窗确实用户操作，点击取消时会有页面跳转（？）
+//onbeforeunload在即将离开当前页面（刷新或关闭）时触发
+//由用户进行判断是否跳转页面
+window.onbeforeunload=function(){
+    return '确定要离开吗？'
+}
 
-    var doctorsTxt=document.getElementById("doctors").innerText;
-    var doctors=JSON.parse(doctorsTxt).Items;
-    var tbody=document.getElementById("tbody");
-    for(var i in illcase){
-        var tr=document.createElement("tr");
-        tbody.appendChild(tr);
-        var td1=document.createElement("td");
-        var check=document.createElement("input");
-        check.setAttribute("type","checkbox");
-        check.setAttribute("name","check");
-        check.setAttribute("id","check"+i);
-        check.setAttribute("type","checkbox");
-        check.setAttribute("value",doctors[i].DoctorKey);
-        td1.appendChild(check);
-        tr.appendChild(td1);
-        var td3=document.createElement("td");
-        td3.innerText=doctors[i].Name;
-        tr.appendChild(td3);
-        var td4=document.createElement("td");
-        if(doctors[i].Gender==0)
-            td4.innerText="男";
-        else
-            td4.innerText="女";
-        tr.appendChild(td4);
-        var td5=document.createElement("td");//年龄
-        td5.innerText=jsGetAge(doctors[i].BirthDate);
-        tr.appendChild(td5);
-        var td6=document.createElement("td");//身份证号
-        td6.innerText=doctors[i].IdNum;
-        tr.appendChild(td6);
-        var td7=document.createElement("td");//手机号
-        td7.innerText=doctors[i].PhoneNum;
-        tr.appendChild(td7);
-        var td8=document.createElement("td");//科室
-        td8.innerText=doctors[i].DeptName;
-        tr.appendChild(td8)
-        var td9=document.createElement("td");//职称
-        td9.innerText=doctors[i].Title;
-        tr.appendChild(td9)
+function loading() {
+    var jsonTxt=document.getElementById("formValue").innerText;
+    if(jsonTxt) {
+        var obj = JSON.parse(jsonTxt);
+        document.getElementById("hospitalCenter1").innerText=obj.Name;
+        document.getElementById("publicKey").value = obj.PublicKey;
+
+        var doctorsTxt = document.getElementById("doctors").innerText;
+        if(doctorsTxt) {
+            var doctors = JSON.parse(doctorsTxt).Items;
+            var tbody = document.getElementById("tbody");
+            for (var i in doctors) {
+                var tr = document.createElement("tr");
+                tbody.appendChild(tr);
+                var td1 = document.createElement("td");
+                var check = document.createElement("input");
+                check.setAttribute("type", "checkbox");
+                check.setAttribute("name", "check");
+                check.setAttribute("id", "check" + i);
+                check.setAttribute("type", "checkbox");
+                check.setAttribute("value",doctors[i].DoctorKey);
+                td1.appendChild(check);
+                tr.appendChild(td1);
+                var td3 = document.createElement("td");
+                td3.innerText = doctors[i].Name;
+                tr.appendChild(td3);
+                var td4 = document.createElement("td");
+                if (doctors[i].Gender == 0)
+                    td4.innerText = "男";
+                else
+                    td4.innerText = "女";
+                tr.appendChild(td4);
+                var td5 = document.createElement("td");//年龄
+                td5.innerText = jsGetAge(doctors[i].BirthDate);
+                tr.appendChild(td5);
+                // var td6 = document.createElement("td");//身份证号
+                // td6.innerText = doctors[i].IdNum;
+                // tr.appendChild(td6);
+                // var td7 = document.createElement("td");//手机号
+                // td7.innerText = doctors[i].PhoneNum;
+                // tr.appendChild(td7);
+                var td8 = document.createElement("td");//科室
+                td8.innerText = doctors[i].DeptName;
+                tr.appendChild(td8)
+                var td9 = document.createElement("td");//职称
+                if(doctors[i].Title==0)
+                    td9.innerText ="医士、医师、住院医师";
+                else if(doctors[i].Title==1)
+                    td9.innerText ="主治医师";
+                else if(doctors[i].Title==2)
+                    td9.innerText ="副主任医师";
+                else if(doctors[i].Title==3)
+                    td9.innerText ="主任医师";
+                tr.appendChild(td9)
+                var td10 = document.createElement("td");//状态
+                if(doctors[i].Status==0)
+                    td10.innerText="待审核";
+                else
+                    td10.innerText="不通过";
+                tr.appendChild(td10)
+            }
+        }
+    }
+    else {
+        alert("登录已过期，请重新登陆！")
+        window.location.href="login";
     }
 }
 
@@ -73,32 +102,28 @@ $("input[name='all_check']").change(function () {
     }
 });
 
-function confirmVerify(){
-    if(confirm('确定审核通过以上记录吗？'))
-    {
-        var str="";
-        $("input[name='check']:checkbox:checked").each(function(){
-            str+=$(this).val()+",";
+function confirmVerify() {
+    if (confirm('确定审核通过以上记录吗？')) {
+        var str = "";
+        $("input[name='check']:checkbox:checked").each(function () {
+            str += $(this).val() + ",";
         })
         $("#selectedItem").val(str);
-        var check=document.getElementsByName("check");
-        var flag=false;
-        for(var c=0;c<check.length;c++)
-        {
-            if(check[c].checked==true)
-            {
-                flag=true;
-                document.userForm.action='/user/illcase/lockRecord';
-                document.userForm.method='post';
+        var check = document.getElementsByName("check");
+        var flag = false;
+        for (var c = 0; c < check.length; c++) {
+            if (check[c].checked == true) {
+                flag = true;
+                document.userForm.action = '/hospital/verifyDoctor/pass';
+                document.userForm.method = 'post';
                 document.userForm.submit();
             }
         }
-        if(flag==false)
-            alert("至少要选择一条记录！");
         return true;
     }
-    else
+    else {
         return false;
+    }
 }
 
 function confirmDeny()
@@ -117,13 +142,11 @@ function confirmDeny()
             if(check[c].checked==true)
             {
                 flag=true;
-                document.userForm.action='/user/illcase/unlockRecord';
+                document.userForm.action='/hospital/verifyDoctor/fail';
                 document.userForm.method='post';
                 document.userForm.submit();
             }
         }
-        if(flag==false)
-            alert("至少要选择一条记录！");
         return true;
     }
     else
@@ -142,8 +165,10 @@ function checkSelected() {
     }
     if(count>0)
         flag = true;
-    else
+    else {
         alert("请至少选择一条记录！");
+        window.history.back(-1);
+    }
     return true;
 }
 

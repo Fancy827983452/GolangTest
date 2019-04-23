@@ -106,16 +106,25 @@ func GetDoctorInfoByPublicKey(doctor Doctor)(*Doctor, error){
 func GetUnverifiedDoctors(hospitalId int) *Doctors {
 	var result Doctors
 	result.Items = []*Doctor{}
-	query := "select name,birthdate,gender,id_number,phone_number,department_name,title from tbl_doctor " +
+	query := "select doctor_key,name,birthdate,gender,id_number,phone_number,department_name,title,aec_key,status from tbl_doctor " +
 		"join tbl_medical_institution_department on tbl_medical_institution_department.department_id=tbl_doctor.department_id " +
-		"where tbl_doctor.medical_institution_id='"+string(hospitalId)+"'"
-	rows, err := db.Query(query)
+		"where tbl_doctor.medical_institution_id=? and (status='0' or status='-1')"
+	rows, err := db.Query(query,hospitalId)
 	util.CheckErr(err)
 	for rows.Next() {
 		item := Doctor{}
-		err = rows.Scan(&item.Name,&item.BirthDate,&item.Gender,&item.IdNum,&item.PhoneNum,&item.DeptName,&item.Title)
+		err = rows.Scan(&item.DoctorKey,&item.Name,&item.BirthDate,&item.Gender,&item.IdNum,&item.PhoneNum,&item.DeptName,&item.Title,&item.Aec_Key,&item.Status)
 		util.CheckErr(err)
 		result.Items = append(result.Items, &item)
 	}
 	return &result
+}
+
+//审核医生注册申请
+func UpdateDoctorStatus(id string,status int) (int64,error){
+	sql :="update tbl_doctor set status=? where doctor_key=?"
+	res, err := db.Exec(sql,status,id)
+	util.CheckErr(err)
+	result, err := res.RowsAffected()
+	return result, nil
 }
