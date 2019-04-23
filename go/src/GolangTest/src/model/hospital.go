@@ -13,7 +13,11 @@ type Hospital struct {
 	Password	string
 	Addr		string  //base58地址
 	PublicKey   string
-	Status      int 	//状态（0：待审核；1：审核通过；2：异常）
+	Status      int 	//状态（-1：审核不通过；0：待审核；1：审核通过；2：其他异常）
+}
+
+type Hospitals struct {
+	Items    []*Hospital
 }
 
 func HospitalRegister(h Hospital) (bool, error){
@@ -49,4 +53,49 @@ func CheckHospitalLogin(h Hospital) (int, error) {
 	err := db.QueryRow(sql,h.Name,h.Name,h.Password).Scan(&count)
 	util.CheckErr(err)
 	return count, err
+}
+
+//获取所有不同状态的医院
+func GetUnverifiedHospitals(status int) *Hospitals {
+	var result Hospitals
+	result.Items = []*Hospital{}
+	query := "select medical_institution_id,name,info,location,grade,addr,publicKey,status from tbl_medical_institution where status=?"
+	rows, err := db.Query(query,status)
+	util.CheckErr(err)
+	//if rows == nil {
+	//
+	//}else {
+		for rows.Next() {
+			item := Hospital{}
+			err=rows.Scan(&item.HospitalId, &item.Name, &item.Info, &item.Location, &item.Grade, &item.Addr, &item.PublicKey, &item.Status)
+			util.CheckErr(err)
+			result.Items = append(result.Items, &item)
+		}
+	//}
+	return &result
+}
+
+//显示全部医院
+func GetAllHospitals() *Hospitals {
+	var result Hospitals
+	result.Items = []*Hospital{}
+	query := "select medical_institution_id,name,info,location,grade,addr,publicKey,status from tbl_medical_institution "
+	rows, err := db.Query(query)
+	util.CheckErr(err)
+	for rows.Next() {
+		item := Hospital{}
+		err = rows.Scan(&item.HospitalId,&item.Name,&item.Info,&item.Location,&item.Grade,&item.Addr,&item.PublicKey,&item.Status)
+		util.CheckErr(err)
+		result.Items = append(result.Items, &item)
+	}
+	return &result
+}
+
+//审核医院注册申请
+func UpdateHospitalStatus(id string,status int) (int64,error){
+	sql :="update tbl_medical_institution set status=? where medical_institution_id=?"
+	res, err := db.Exec(sql,status,id)
+	util.CheckErr(err)
+	result, err := res.RowsAffected()
+	return result, nil
 }

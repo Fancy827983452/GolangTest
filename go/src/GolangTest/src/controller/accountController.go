@@ -260,6 +260,36 @@ func HospitalRegisterPost(ctx iris.Context)  {
 	}
 }
 
+//管理员
+func AdminLogin(ctx iris.Context)  {
+	ctx.View("admin/Login.html")
+}
+
+func AdminLoginPost(ctx iris.Context){
+	var admin model.Admin
+	var msg string
+	admin.ID=ctx.FormValue("username")
+	admin.Password=ctx.FormValue("password")
+	admin.ID = algorithm.GetMd5String(admin.ID)//MD5加密ID
+	admin.Password = algorithm.GetMd5String(admin.Password)//MD5加密password
+	//fmt.Println("id=",admin.ID)
+	//fmt.Println("password=",admin.Password)
+
+	count,_:=model.CheckAdminLogin(admin)//判断数据库中是否存在该医院
+	if count==0{
+		msg="用户名或密码错误！"
+		ctx.HTML("<script>alert('"+msg+"');window.history.back(-1);</script>")
+	} else {
+		h,err := model.AdminLogin(admin)
+		util.CheckErr(err)
+		msg="欢迎，管理员！"
+		//获取session管理器
+		session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+		session.Set("currentAdmin",util.ParseJson(h))
+		ctx.HTML("<script>alert('"+msg+"');window.location.href='verifyHospitals';</script>")
+	}
+}
+
 func Logout(ctx iris.Context) {
 	sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
 	ctx.HTML("<script>alert('登出成功！');window.location.href='login';</script>")

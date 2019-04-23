@@ -64,10 +64,10 @@ func CheckDoctorLogin(doctor Doctor) (int, error) {
 
 func DoctorLogin(doctor Doctor)(*Doctor, error){
 	sql :="select doctor_key,tbl_doctor.Name,birthdate,gender,id_number,phone_number,tbl_doctor.medical_institution_id,tbl_medical_institution.name," +
-		"tbl_doctor.department_id,tbl_medical_institution_department.department_name,password,aec_key,addr,title,status,role from tbl_doctor " +
+		"tbl_doctor.department_id,tbl_medical_institution_department.department_name,tbl_doctor.password,aec_key,tbl_doctor.addr,title,tbl_doctor.status,role from tbl_doctor " +
 		"join tbl_medical_institution on tbl_doctor.medical_institution_id=tbl_medical_institution.medical_institution_id " +
 		"join tbl_medical_institution_department on tbl_doctor.department_id=tbl_medical_institution_department.department_id " +
-		"where (tbl_doctor.name=? or phone_number=?) and password=?"
+		"where (tbl_doctor.name=? or phone_number=?) and tbl_doctor.password=?"
 	err := db.QueryRow(sql,doctor.Name,doctor.Name,doctor.Password).Scan(&doctor.DoctorKey,&doctor.Name,&doctor.BirthDate,&doctor.Gender,&doctor.IdNum,&doctor.PhoneNum,&doctor.HospitalId,&doctor.HospitalName,&doctor.DeptId,&doctor.DeptName,&doctor.Password,&doctor.Aec_Key,&doctor.Addr,&doctor.Title,&doctor.Status,&doctor.Role)
 	util.CheckErr(err)
 	return &doctor, err

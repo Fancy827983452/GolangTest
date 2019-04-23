@@ -80,6 +80,18 @@ func main() {
 		hospital.Get("/logout", controller.Logout)
 	}
 
+	admin:=app.Party("admin")
+	{
+		admin.Get("/",controller.AdminLogin)
+		admin.Get("/login",controller.AdminLogin)
+		admin.Post("/loginPost",controller.AdminLoginPost)
+		admin.Get("/verifyHospitals",controller.VerifyHospitals)
+		admin.Get("/jsVerifyHospitals/{status}",controller.JSVerifyHospitals)
+		admin.Post("/verifyHospitals/pass",controller.PassHospital)
+		admin.Post("/verifyHospitals/fail",controller.FailHospital)
+		admin.Get("/logout", controller.Logout)
+	}
+
 	// 为特定HTTP错误注册自定义处理程序方法
 	// 当出现 StatusInternalServerError 500错误，将执行第二参数回调方法
 	//app.OnErrorCode(iris.StatusInternalServerError, func(ctx iris.Context) {
