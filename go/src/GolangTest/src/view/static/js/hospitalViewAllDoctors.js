@@ -40,12 +40,6 @@ function loading() {
                 var td5 = document.createElement("td");//年龄
                 td5.innerText = jsGetAge(doctors[i].BirthDate);
                 tr.appendChild(td5);
-                // var td6 = document.createElement("td");//身份证号
-                // td6.innerText = doctors[i].IdNum;
-                // tr.appendChild(td6);
-                // var td7 = document.createElement("td");//手机号
-                // td7.innerText = doctors[i].PhoneNum;
-                // tr.appendChild(td7);
                 var td8 = document.createElement("td");//科室
                 td8.innerText = doctors[i].DeptName;
                 tr.appendChild(td8);
@@ -59,14 +53,26 @@ function loading() {
                 else if(doctors[i].Title==3)
                     td9.innerText ="主任医师";
                 tr.appendChild(td9);
-                var td10 = document.createElement("td");//状态
-                if(doctors[i].Status==0)
-                    td10.innerText="待审核";
-                else
-                    td10.innerText="不通过";
+                var td10 = document.createElement("td");//身份
+                if(doctors[i].Role==1)
+                    td10.innerText="管理员";
                 tr.appendChild(td10);
             }
         }
+        //根据url路径设置下拉框的值
+        var url=window.location.href;
+        var select=document.getElementById("select");
+        var options = select.children;
+        if(url.indexOf("searchDoctor/name")!=-1)
+            options[0].selected=true;
+        else if(url.indexOf("searchDoctor/gender")!=-1)
+            options[1].selected=true;
+        else if(url.indexOf("searchDoctor/department_name")!=-1)
+            options[2].selected=true;
+        else if(url.indexOf("searchDoctor/title")!=-1)
+            options[3].selected=true;
+        else if(url.indexOf("searchDoctor/role")!=-1)
+            options[4].selected=true;
     }
     else {
         alert("登录已过期，请重新登陆！")
@@ -102,8 +108,8 @@ $("input[name='all_check']").change(function () {
     }
 });
 
-function confirmVerify() {
-    if (confirm('确定审核通过以上记录吗？')) {
+function confirmRole() {
+    if (confirm('确定设置为管理员吗？')) {
         var str = "";
         $("input[name='check']:checkbox:checked").each(function () {
             str += $(this).val() + ",";
@@ -114,7 +120,7 @@ function confirmVerify() {
         for (var c = 0; c < check.length; c++) {
             if (check[c].checked == true) {
                 flag = true;
-                document.userForm.action = '/hospital/verifyDoctor/pass';
+                document.userForm.action = '/hospital/setAdmin';
                 document.userForm.method = 'post';
                 document.userForm.submit();
             }
@@ -126,9 +132,9 @@ function confirmVerify() {
     }
 }
 
-function confirmDeny()
+function confirmCancel()
 {
-    if(confirm('确定审核不通过以上记录吗？'))
+    if(confirm('确定取消管理员身份吗？'))
     {
         var str="";
         $("input[name='check']:checkbox:checked").each(function(){
@@ -142,7 +148,34 @@ function confirmDeny()
             if(check[c].checked==true)
             {
                 flag=true;
-                document.userForm.action='/hospital/verifyDoctor/fail';
+                document.userForm.action='/hospital/cancelAdmin';
+                document.userForm.method='post';
+                document.userForm.submit();
+            }
+        }
+        return true;
+    }
+    else
+        return false;
+}
+
+function confirmWithdraw()
+{
+    if(confirm('确定注销以上账户吗？'))
+    {
+        var str="";
+        $("input[name='check']:checkbox:checked").each(function(){
+            str+=$(this).val()+",";
+        })
+        $("#selectedItem").val(str);
+        var check=document.getElementsByName("check");
+        var flag=false;
+        for(var c=0;c<check.length;c++)
+        {
+            if(check[c].checked==true)
+            {
+                flag=true;
+                document.userForm.action='/hospital/verifyDoctor/withdraw';
                 document.userForm.method='post';
                 document.userForm.submit();
             }
@@ -167,7 +200,6 @@ function checkSelected() {
         flag = true;
     else {
         alert("请至少选择一条记录！");
-        window.history.back(-1);
     }
     return true;
 }
@@ -211,4 +243,11 @@ function jsGetAge(strBirthday)
             returnAge = -1;//返回-1 表示出生日期输入错误 晚于今天
     }
     return returnAge;//返回周岁年龄
+}
+
+function search() {
+    var param=document.getElementById("select").value;
+    document.userForm.action='/hospital/searchDoctor/'+param;
+    document.userForm.method='post';
+    document.userForm.submit();
 }

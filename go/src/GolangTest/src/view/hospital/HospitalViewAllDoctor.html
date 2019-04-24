@@ -8,7 +8,7 @@
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body onload="loading()">
 <div>
     <nav id="top" style="background:url('../../File/bg1.jpg') no-repeat center fixed;background-size:100% 100%" >
         <div class="container">
@@ -41,66 +41,62 @@
     </div>
     <div class="col-md-8 col-md-offset-1" style="margin-top: 10px">
         <div class="form-horizontal" style="width: 80%;margin-top: 40px" align="center">
-            <div class="input-group col-md-6" style="float: right">
-                <input type="text" class="form-control" placeholder="科室/姓名...">
-                <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" style="color: rgb(47, 140, 182);"></span></button>
-                    </span>
-            </div>
-            <table class="table table-striped" style="width: 700px; table-layout: fixed">
-                <caption>所有在职医生</caption>
-                <thead>
-                <tr>
-                    <th><input type="checkbox" value="" id="quanxuan" nam="quanxuan">全选</th>
-                    <th>ID</th>
-                    <th>医生姓名</th>
-                    <th>性别</th>
-                    <th>科室</th>
-                    <th>职称</th>
-                    <th>身份</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><input type="checkbox" value="" class="cb"></td>
-                    <td>1</td>
-                    <td>ABC</td>
-                    <td>nv</td>
-                    <td>骨科</td>
-                    <td>副主任医师</td>
-                    <td>普通医生</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" value="" class="cb"></td>
-                    <td>2</td>
-                    <td>QWE</td>
-                    <td>nv</td>
-                    <td>内科</td>
-                    <td>副主任医师</td>
-                    <td>普通医生</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" value="" class="cb"></td>
-                    <td>3</td>
-                    <td>ASD</td>
-                    <td>nv</td>
-                    <td>骨科</td>
-                    <td>主任医师</td>
-                    <td>科室管理员</td>
-                </tr>
-                </tbody>
-            </table>
-            <div style="margin-top: 50px;">
-                <button class="btn btn-primary" style="margin-left: 50px;"  name="submit" onclick="">设为科室管理员</button>
-                <button class="btn btn-primary" style="margin-left: 50px;" name="submit" onclick="">取消科室管理员</button>
-                <button class="btn btn-primary" style="margin-left: 50px;" name="refuse" onclick="">注销账户</button>
-            </div>
+            <form action="" method="post" id="userForm" name="userForm">
+                <div>
+                    <select id="select" name="select" class="form-control" style="width:80px;float: left;margin-left: 35%">
+                        <option value="name">姓名</option>
+                        <option value="gender">性别</option>
+                        <option value="department_name">科室</option>
+                        <option value="title">职称</option>
+                        <option value="role">身份</option>
+                    </select>
+                    <div class="input-group col-md-6" style="float: right">
+                        <input type="text" class="form-control" name="department" placeholder="搜索">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit" onclick="search()">
+                                <span class="glyphicon glyphicon-search" style="color: rgb(47, 140, 182);"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <table id="table" class="table table-striped" style="width: 700px; table-layout: fixed">
+                    <caption>所有在职医生</caption>
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" name="all_check"></th>
+                        <th>医生姓名</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>科室</th>
+                        <th>职称</th>
+                        <th>身份</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+
+                {{/*隐藏域传值*/}}
+                <div hidden>
+                    <input name="publicKey" id="publicKey">
+                    <input id="selectedItem" name="selectedItem">
+                </div>
+
+                <div style="margin-top: 50px;">
+                    <button class="btn btn-primary" style="margin-left: 50px;"  onmousedown="return checkSelected()" onmouseup="return confirmRole()">设为科室管理员</button>
+                    <button class="btn btn-primary" style="margin-left: 50px;" onmousedown="return checkSelected()" onmouseup="return confirmCancel()">取消科室管理员</button>
+                    <button class="btn btn-primary" style="margin-left: 50px;" onmousedown="return checkSelected()" onmouseup="return confirmWithdraw()">注销账户</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+{{/*<span id="doctors">{{.doctors}}</span>*/}}
 <div hidden>
     <span id="formValue">{{.currentHospital}}</span>
+    <span id="doctors">{{.doctors}}</span>
 </div>
 </body>
-<script type="text/javascript" src="/static/js/hospitalCenter.js"></script>
+{{/*<script type="text/javascript" src="/static/js/hospitalCenter.js"></script>*/}}
+<script type="text/javascript" src="/static/js/hospitalViewAllDoctors.js?ver=3"></script>
 </html>

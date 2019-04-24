@@ -120,10 +120,55 @@ func GetUnverifiedDoctors(hospitalId int) *Doctors {
 	return &result
 }
 
+//读取数据库中所有在职医生
+func GetValidDoctors(hospitalId int) *Doctors {
+	var result Doctors
+	result.Items = []*Doctor{}
+	query := "select doctor_key,name,birthdate,gender,id_number,phone_number,department_name,title,aec_key,status,role from tbl_doctor " +
+		"join tbl_medical_institution_department on tbl_medical_institution_department.department_id=tbl_doctor.department_id " +
+		"where tbl_doctor.medical_institution_id=? and (status=1 or status=2 or status=3 or status=4)"
+	rows, err := db.Query(query,hospitalId)
+	util.CheckErr(err)
+	for rows.Next() {
+		item := Doctor{}
+		err = rows.Scan(&item.DoctorKey,&item.Name,&item.BirthDate,&item.Gender,&item.IdNum,&item.PhoneNum,&item.DeptName,&item.Title,&item.Aec_Key,&item.Status,&item.Role)
+		util.CheckErr(err)
+		result.Items = append(result.Items, &item)
+	}
+	return &result
+}
+
+//根据下拉框选中的参数找到相应的医生
+func GetSelectedDoctors(hospitalId int,param string,name string) *Doctors {
+	var result Doctors
+	result.Items = []*Doctor{}
+	query := "select doctor_key,name,birthdate,gender,id_number,phone_number,department_name,title,aec_key,status,role from tbl_doctor " +
+		"join tbl_medical_institution_department on tbl_medical_institution_department.department_id=tbl_doctor.department_id " +
+		"where tbl_doctor.medical_institution_id=? and (status=1 or status=2 or status=3 or status=4) and "+param+"=?"
+	rows, err := db.Query(query,hospitalId,name)
+	util.CheckErr(err)
+	for rows.Next() {
+		item := Doctor{}
+		err = rows.Scan(&item.DoctorKey,&item.Name,&item.BirthDate,&item.Gender,&item.IdNum,&item.PhoneNum,&item.DeptName,&item.Title,&item.Aec_Key,&item.Status,&item.Role)
+		util.CheckErr(err)
+		result.Items = append(result.Items, &item)
+	}
+	return &result
+}
+
 //审核医生注册申请
 func UpdateDoctorStatus(id string,status int) (int64,error){
 	sql :="update tbl_doctor set status=? where doctor_key=?"
 	res, err := db.Exec(sql,status,id)
+	util.CheckErr(err)
+	result, err := res.RowsAffected()
+	return result, nil
+}
+
+//设置医生为科室管理员
+func UpdateDoctorRole(id string,role int) (int64,error){
+	sql :="update tbl_doctor set role=? where doctor_key=?"
+	res, err := db.Exec(sql,role,id)
 	util.CheckErr(err)
 	result, err := res.RowsAffected()
 	return result, nil

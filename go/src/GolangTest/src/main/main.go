@@ -75,7 +75,11 @@ func main() {
 		hospital.Get("/verifyDoctor",controller.VerifyDoctor)//审核医生注册申请
 		hospital.Post("/verifyDoctor/pass",controller.PassDoctor)
 		hospital.Post("/verifyDoctor/fail",controller.FailDoctor)
+		hospital.Post("/verifyDoctor/withdraw",controller.WithdrawDoctor)
 		hospital.Get("/viewDoctors",controller.ViewDoctors)//查看所有医生
+		hospital.Post("/setAdmin",controller.SetDoctorAdmin)
+		hospital.Post("/cancelAdmin",controller.CancelDoctorAdmin)
+		hospital.Post("/searchDoctor/{param}",controller.SearchDoctor)
 		hospital.Get("/departmentManagement",controller.HospitalDepartmentManagement)//科室管理
 		hospital.Get("/logout", controller.Logout)
 	}
