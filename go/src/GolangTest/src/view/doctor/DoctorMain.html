@@ -19,7 +19,7 @@
                 <div class="col-md-5 col-md-offset-4">
                     <ul class="nav navbar-nav"  style="float:right">
                         <li><a id="doctorCenter"><span class="glyphicon glyphicon-user" id="doctorCenter1"></span> </a></li>
-                        <li><a href="logout" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+                        <li><a href="/doctor/logout/1" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
                     </ul>
                 </div>
 
@@ -32,70 +32,54 @@
                 <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="" />
             </li>
             <li class="list-group-item"><a href="/doctor/main">查看预约</a></li>
+            <li class="list-group-item"><a href="/doctor/treatmentHistory">查看历史诊治记录</a></li>
             <li class="list-group-item"><a href="/doctor/editInfo">修改信息</a></li>
             <li class="list-group-item"><a href="/doctor/editPwd">修改密码</a></li>
             <li class="list-group-item"><a href="/doctor/visitHistory">访问历史</a></li>
         </ul>
     </div>
     <div class="col-md-8 col-md-offset-1">
-        <div class="form-horizontal" style="width: 80%;margin-top: 50px">
-            <div>
-                <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-play" style="color: rgb(255, 0, 0);">继续工作</span></button>
-                <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-pause" style="color: rgb(255, 0, 0);">暂时挂起</span></button>
-            </div>
-            <div class="input-group col-md-6" style="float: right">
-                <input type="text" class="form-control" placeholder="预约号">
-                <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" style="color: rgb(47, 140, 182);"></span></button>
-                    </span>
-            </div>
-            <form>
+        <form id="doctorMainForm" action="/doctor/main" method="post">
+            <div class="form-horizontal" style="width: 80%;margin-top: 50px">
+                <div>
+                    <button class="btn btn-default" id="startBtn" type="submit">
+                        <span class="glyphicon glyphicon-play" style="color:green">开始工作</span>
+                    </button>
+                    <button class="btn btn-default" id="SuspendBtn" type="submit">
+                        <span class="glyphicon glyphicon-pause" style="color: rgb(255, 0, 0);">暂时挂起</span>
+                    </button>
+                </div>
+                {{/*<div class="input-group col-md-4" style="float: right">*/}}
+                    {{/*<input type="text" class="form-control" placeholder="预约号码/姓名">*/}}
+                    {{/*<span class="input-group-btn">*/}}
+                        {{/*<button class="btn btn-default" type="button">*/}}
+                            {{/*<span class="glyphicon glyphicon-search" style="color: rgb(47, 140, 182);"></span>*/}}
+                        {{/*</button>*/}}
+                    {{/*</span>*/}}
+                {{/*</div>*/}}
                 <table class="table table-striped" style="width: 700px; table-layout: fixed">
-                    <caption>病人预约表</caption>
+                    <caption>患者预约情况</caption>
                     <thead>
                     <tr>
-                        <th></th>
-                        <th>ID</th>
-                        <th>姓名</th>
                         <th>预约号</th>
+                        <th>姓名</th>
+                        <th>预约就诊日期</th>
                         <th>预约时间</th>
+                        <th>状态</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td><input type="checkbox" value="" class="cb"></td>
-                        <td>QWE</td>
-                        <td>ABC</td>
-                        <td>ASD</td>
-                        <td>AWR</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" value="" class="cb"></td>
-                        <td>AWR</td>
-                        <td>DFG</td>
-                        <td>GTR</td>
-                        <td>ZCI</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" value="" class="cb"></td>
-                        <td>AWR</td>
-                        <td>DFG</td>
-                        <td>QWE</td>
-                        <td>ABC</td>
-                    </tr>
+                    <tbody id="tbody">
                     </tbody>
                 </table>
-                <div style="margin-top: 30px;">
-                    <button class="btn btn-primary" type="submit" style="margin-left:40%;"  name="submit" onclick="">确认</button>
-                    <button class="btn btn-primary" type="reset" style="margin-left: 50px;" name="submit" onclick="">取消</button>
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
-<div hidden>
-    <span id="formValue">{{.currentDoctor}}</span>
+<div>
+    <span id="formValue" hidden>{{.currentDoctor}}</span>
+    <span id="doctorStatus" hidden>{{.doctorStatus}}</span>
+    <span id="appoints" hidden>{{.appoints}}</span>
 </div>
 </body>
-<script type="text/javascript" src="/static/js/doctorCenter.js"></script>
+<script type="text/javascript" src="/static/js/doctorMain.js"></script>
 </html>

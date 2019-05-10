@@ -39,6 +39,10 @@ func main() {
 		user.Post("/illcase/lockRecord",controller.LockRecord)
 		user.Post("/illcase/unlockRecord",controller.UnlockRecord)
 		user.Get("/visitRecord",controller.VisitUserRecord)
+		user.Get("/appointment",controller.UserAppointment)
+		user.Get("/appointment/{param}",controller.UserAppointment)
+		user.Post("/appointment",controller.UserAppointmentSearchPost)
+		user.Post("/addAppointment",controller.UserAddAppointment)
 	}
 
 	doctor:=app.Party("doctor")
@@ -49,20 +53,22 @@ func main() {
 		doctor.Get("/login",controller.DoctorLogin)	//医生登陆
 		doctor.Post("/loginPost",controller.DoctorLoginPost)
 		doctor.Get("/main",controller.DoctorMain)//医生主界面，包含查看所有当前挂号预约的信息
+		doctor.Post("/main",controller.DoctorMainPost)
 		doctor.Get("/editInfo",controller.DoctorEditInfo)//修改信息
 		doctor.Post("/editInfoPost",controller.DoctorEditInfoPost)
 		doctor.Get("/editPwd",controller.DoctorEditPwd)//修改密码
 		doctor.Post("/editPwdPost",controller.DoctorEditPwdPost)
 		doctor.Get("/visitHistory",controller.VisitHistory)//查看当前医生访问过的病人历史记录
-		doctor.Get("/patientDetails",controller.PatientDetails)	//查看病人详细信息
-		doctor.Get("/patientHistoryCase",controller.PatientHistoryCase)	//查看病人历史病历
-		doctor.Get("/addCase",controller.AddCase)	//添加病例
-		doctor.Get("/patientTreatmentHistory",controller.PatientTreatmentHistory)	//查看病人就诊记录
+		//doctor.Get("/patientDetails",controller.PatientDetails)	//查看病人详细信息
+		doctor.Get("/addCase/{appointmentId}",controller.AddCase)	//添加病例
+		doctor.Post("/addCase",controller.AddCasePost)	//添加病例
+		doctor.Get("/treatmentHistory",controller.TreatmentHistory)	//查看历史就诊记录
+		doctor.Post("/treatmentHistory",controller.TreatmentHistorySearch)
 		doctor.Get("/departmentManagement",controller.DepartmentManagement)//科室管理员
 		doctor.Get("/viewArrangement",controller.ViewDepartmentArrangement)
 		doctor.Get("/setAppointmentNum",controller.SetAppointmentNum)
 
-		doctor.Get("/logout", controller.Logout)
+		doctor.Get("/logout/{param}", controller.Logout)
 	}
 
 	hospital:=app.Party("hospital")
@@ -81,6 +87,8 @@ func main() {
 		hospital.Post("/cancelAdmin",controller.CancelDoctorAdmin)
 		hospital.Post("/searchDoctor/{param}",controller.SearchDoctor)
 		hospital.Get("/departmentManagement",controller.HospitalDepartmentManagement)//科室管理
+		hospital.Post("/departmentAddPost", controller.DepartmentAddPost)
+		hospital.Post("/departmentEditInfoPost", controller.DepartmentEditInfoPost)
 		hospital.Get("/logout", controller.Logout)
 	}
 
@@ -98,14 +106,14 @@ func main() {
 
 	// 为特定HTTP错误注册自定义处理程序方法
 	// 当出现 StatusInternalServerError 500错误，将执行第二参数回调方法
-	//app.OnErrorCode(iris.StatusInternalServerError, func(ctx iris.Context) {
-	//	// ctx.Values() 是一个很有用的东西，主要用来使 处理方法与中间件 通信
-	//	errMessage := ctx.Values().GetString("error")//获取自定义错误提示信息
-	//	if errMessage != "" {
-	//		ctx.Writef("Internal server error: %s", errMessage)
-	//		return
-	//	}
-	//	ctx.Writef("(Unexpected) internal server error")
-	//})
+	app.OnErrorCode(iris.StatusInternalServerError, func(ctx iris.Context) {
+		// ctx.Values() 是一个很有用的东西，主要用来使 处理方法与中间件 通信
+		errMessage := ctx.Values().GetString("error")//获取自定义错误提示信息
+		if errMessage != "" {
+			ctx.Writef("Internal server error: %s", errMessage)
+			return
+		}
+		ctx.Writef("(Unexpected) internal server error")
+	})
 	app.Run(iris.Addr(":8080"))
 }

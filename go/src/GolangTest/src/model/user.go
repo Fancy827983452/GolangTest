@@ -95,3 +95,13 @@ func GetAllUser() error {
 	}
 	return err
 }
+
+//根据预约id读取患者信息
+func GetAppointedUserInfo(appointId string) (*User,error) {
+	var user User
+	sql :="select patient_key,name,birthdate,gender from appointment " +
+		"join tbl_user on appointment.patient_key=tbl_user.user_key where id=?"
+	err := db.QueryRow(sql,appointId).Scan(&user.PublicKey,&user.Name,&user.BirthDate,&user.Gender)
+	util.CheckErr(err)
+	return &user, err
+}

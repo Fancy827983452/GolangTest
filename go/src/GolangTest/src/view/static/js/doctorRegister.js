@@ -148,5 +148,8 @@ $(document).ready(function () {
 
     $("#validateBtn").click(function(){
         $("#doctorRegisterForm").bootstrapValidator('validate');
+        // $("#doctorRegisterForm").action="/doctor/registerPost";
+        // $("#doctorRegisterForm").method="post";
+        // $("#doctorRegisterForm").submit();
     });
 });

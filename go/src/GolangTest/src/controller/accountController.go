@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"github.com/kataras/iris"
 	"strconv"
+	"strings"
 )
 
 //用户
@@ -181,6 +182,7 @@ func DoctorLoginPost(ctx iris.Context){
 			//birth, _ :=hex.DecodeString(doctor.BirthDate)
 			//doctor.BirthDate=string(algorithm.AEC_CRT_Crypt(birth,[]byte(doctor.Aec_Key)))
 			session.Set("currentDoctor",util.ParseJson(doctor))
+			session.Set("doctorStatus",doctor.Status)
 			session.Set("AEC_KEY",doctor.Aec_Key)
 			ctx.HTML("<script>alert('"+msg+"');window.location.href='main';</script>")
 		}
@@ -291,6 +293,23 @@ func AdminLoginPost(ctx iris.Context){
 }
 
 func Logout(ctx iris.Context) {
-	sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
-	ctx.HTML("<script>alert('登出成功！');window.location.href='login';</script>")
+	param:=ctx.Params().Get("param") //获取传递的参数
+	if len(param)>0 { //doctor
+		//更改status为1
+		session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+		currentDoctor:=session.Get("currentDoctor")
+		str:=currentDoctor.(string)
+		record:=strings.Split(str,",")[0]//取DoctorKey的key和value
+		value:=strings.Split(record,":")[1]//取value
+		//获取医生公钥
+		doctorKey:=value[1:len(value)-1]//去除前后的双引号
+		result, _ :=model.UpdateDoctorStatus(doctorKey,1)  //更改status为1（离线）
+		if result>0{
+			sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
+			ctx.HTML("<script>alert('登出成功！');window.location.href='/doctor/login';</script>")
+		}
+	} else {
+		sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
+		ctx.HTML("<script>alert('登出成功！');window.location.href='login';</script>")
+	}
 }

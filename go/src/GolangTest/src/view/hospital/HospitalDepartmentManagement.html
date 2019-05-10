@@ -41,40 +41,28 @@
     <div class="col-md-8 col-md-offset-1">
         <div class="form-horizontal" style="width: 80%;margin-top: 50px" align="center">
 
-            <table class="table table-striped" style="width: 700px; table-layout: fixed">
+            <table id="table" name="table" class="table table-striped" style="width: 700px; table-layout: fixed">
                 <caption>科室信息</caption>
                 <thead>
                 <tr>
-                    <th><input type="checkbox" value="" id="quanxuan" nam="quanxuan">全选</th>
+                    <th><input type="checkbox" value="" id="all_check" name="all_check">全选</th>
                     <th>ID</th>
                     <th>科室</th>
                     <th>详细信息</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td><input type="checkbox" value="" class="cb"></td>
-                    <td>1</td>
-                    <td>骨科</td>
-                    <td>QEV</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" value="" class="cb"></td>
-                    <td>2</td>
-                    <td>内科</td>
-                    <td>QWE</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" value="" class="cb"></td>
-                    <td>3</td>
-                    <td>神经外科</td>
-                    <td>QWE</td>
-                </tr>
+                <tbody id="tbody">
                 </tbody>
             </table>
+            <div hidden>
+                <input name="publicKey" id="publicKey">
+                <input id="selectedItem" name="selectedItem">
+            </div>
+
             <div>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#Add" style="margin-left: 100px;" name="submit" onclick="">添加</button>
-                <button class="btn btn-info" data-toggle="modal" data-target="#Edit" style="margin-left: 100px;" name="edit" onclick="">修改</button>
+                <button class="btn btn-info" data-toggle="modal" data-target="#Edit" style="margin-left: 100px;" name="edit"
+                        onmousedown="return checkSelected1()" onmouseup="modal1(this)" >修改</button>
             </div>
         </div>
     </div>
@@ -89,25 +77,28 @@
                     添加科室
                 </h4>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="DepartmentName">科室名称</label>
-                    <input type="text" class="form-control" id="DepartmentName">
-                </div>
-                <div class="form-group">
-                    <label for="detail">详细信息</label>
-                    <textarea class="form-control" ID="detail" rows="4"></textarea>
-                </div>
+
+            <div class="modal-body" style="width: 70%;margin-left: 100px;">
+                <form id="departmentForm" class="form-horizontal" action="/hospital/departmentAddPost" method="post">
+                    <div class="form-group">
+                        <label for="DepartmentName">科室名称</label>
+                        <input type="text" class="form-control" id="DepartmentName" name="DepartmentName">
+                    </div>
+                    <div class="form-group">
+                        <label for="detail">详细信息</label>
+                        <textarea class="form-control" ID="detail" name="detail" rows="4"></textarea>
+                    </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"
                         data-dismiss="modal">关闭
                 </button>
-                <button type="button" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary">
                     提交
                 </button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -119,34 +110,43 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </button>
                 <h4 class="modal-title" id="myModalLabe2">
-                    添加科室
+                    修改科室
                 </h4>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="DepartmentName">科室名称</label>
-                    <input type="text" class="form-control" id="DepartmentName2">
-                </div>
-                <div class="form-group">
-                    <label for="detail">详细信息</label>
-                    <textarea class="form-control" ID="detail2" rows="4"></textarea>
-                </div>
+            <div class="modal-body" style="width: 70%;margin-left: 100px;">
+                <form id="departmentEditInfoForm" class="form-horizontal" action="/hospital/departmentEditInfoPost" method="post">
+                    <div class="form-group">
+                        <label for="DepartmentName">科室名称</label>
+                        <input type="text" class="form-control" id="DepartmentName2" name="DepartmentName2" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="detail">详细信息</label>
+                        <textarea class="form-control" ID="detail2" name="detail2" rows="4"></textarea>
+                    </div>
+
+                    <div hidden>
+                        <input id="DepartmentId" name="DepartmentId">
+                    </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"
                         data-dismiss="modal">关闭
                 </button>
-                <button type="button" class="btn btn-primary">
-                    提交
+
+                <button type="submit" class="btn btn-primary">
+                    修改
                 </button>
             </div>
+            </form>
         </div>
     </div>
 </div>
 <div hidden>
     <span id="formValue">{{.currentHospital}}</span>
+    <span id="department">{{.department}}</span>
 </div>
 </body>
-<script type="text/javascript" src="/static/js/hospitalCenter.js"></script>
+<script type="text/javascript" src="/static/js/hospitalCenter.js?ver=3"></script>
 </html>

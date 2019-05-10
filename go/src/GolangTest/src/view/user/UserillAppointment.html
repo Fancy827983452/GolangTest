@@ -18,7 +18,7 @@
 
                 <div class="col-md-5 col-md-offset-4">
                     <ul class="nav navbar-nav"  style="float:right">
-                        <li><a id="userCenter"><span class="glyphicon glyphicon-user"></span> {{.username}}</a></li>
+                        <li><a id="userCenter"><span class="glyphicon glyphicon-user" id="userCenter1"></span> </a></li>
                         <li><a href="/logout" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
                     </ul>
                 </div>
@@ -42,42 +42,71 @@
     </div>
 </div>
 <div class="container">
-    <div align="center" style="margin-top: 50px;margin-left:120px;width: 80%;overflow: auto" >
-        <table class="table table-hover"style="width:100%;table-layout:fixed;">
-            <thead>
-            <tr>
-                <th>科室</th>
-                <th>具体信息</th>
-                <th>位置</th>
-                <th>主治医生</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Tanmay</td>
-                <td>Bangalore</td>
-                <td>Bangalore</td>
-                <td><a>400003</a></td>
-            </tr>
-            <tr>
-                <td>Sachin</td>
-                <td>Mumbai</td>
-                <td>Bangalore</td>
-                <td><a>400003</a></td>
-            </tr>
-            <tr>
-                <td>Uma</td>
-                <td>Pune</td>
-                <td>Bangalore</td>
-                <td><a>400003</a></td>
-            </tr>
-            </tbody>
-        </table>
+
+    <div class="col-lg-3">
+        <ul class="list-group" id="ueserfunction">
+            <li class="list-group-item">
+                <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="~/File/Images/@path" />
+            </li>
+            <li class="list-group-item"><a href="/user/appointment">预约挂号</a></li>
+            <li class="list-group-item"><a href="/user/editInfo">修改信息</a></li>
+            <li class="list-group-item"><a href="/user/editPassword">修改密码</a></li>
+            <li class="list-group-item"><a href="/user/illcase">就诊记录</a></li>
+            <li class="list-group-item"><a href="/user/visitRecord">病历访问记录</a></li>
+            <li class="list-group-item"><a href="">申请授权</a></li>
+        </ul>
+    </div>
+
+    <div class="col-md-9 ">
+        <form id="appointForm" action="/user/addAppointment" method="post">
+            <input name="publicKey" id="publicKey" hidden>
+            <input name="hospitalID" id="hospitalID" >
+            <input name="deptID" id="deptID" >
+            <input name="DAY" id="DAY" >
+            <div>
+                <select id="hospitalName" name="hospitalName" class="form-control" style="width:180px;float: left;margin-left:15%">
+                    <option value="null">选择医院</option>
+                </select>
+                <select id="deptName" name="deptName" class="form-control" style="width:120px;float: left;margin-left: 2px">
+                    <option value="null">选择科室</option>
+                </select>
+                <select id="selectDate" name="selectDate" class="form-control" style="width:150px;float: left;margin-left: 2px">
+                    <option value="null">选择时间</option>
+                </select>
+                {{/*<select id="doctorName" name="doctorName" class="form-control" style="width:120px;float: left;margin-left: 2px">*/}}
+                    {{/*<option value="null">选择医生</option>*/}}
+                    {{/*<option value="-1">不限</option>*/}}
+                {{/*</select>*/}}
+                <button class="btn btn-default" type="button" onclick="search()" style="float: left;margin-left: 2px;argin-left: 2px;color: rgb(47, 140, 182);">
+                    <span class="glyphicon glyphicon-search"></span>
+                    搜索
+                </button>
+            </div>
+
+            <div align="center" style="margin-top: 50px;margin-left:120px;width: 80%;overflow: auto" >
+                <div>
+                    <br/>
+                    <div id="remainField"></div>
+                </div>
+                <table class="table table-hover"style="width:100%;table-layout:fixed;">
+                    <tbody id="tbody">
+                    </tbody>
+                </table>
+            </div>
+        </form>
     </div>
 </div>
 
-<div hidden>
-
+<div id="hiddenDiv">
+    <span id="formValue" hidden>{{.currentUser}}</span>
+    <span id="hospitals" hidden>{{.hospitals}}</span>
+    <span id="departments" hidden>{{.departments}}</span>
+    <span id="doctors" hidden>{{.doctors}}</span>
+    <span id="remain" hidden>{{.remain}}</span>
+    <span name="hospitalId" id="hospitalId" hidden>{{.hospitalId}}</span>
+    <span name="deptId" id="deptId" hidden>{{.deptId}}</span>
+    <span name="day" id="day" hidden>{{.day}}</span>
 </div>
 </body>
+<script type="text/javascript" src="/static/js/userAppointment.js?ver=4.0"></script>
 </html>
