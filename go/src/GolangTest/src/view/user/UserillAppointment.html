@@ -46,7 +46,7 @@
     <div class="col-lg-3">
         <ul class="list-group" id="ueserfunction">
             <li class="list-group-item">
-                <img class="img-responsive" name="head" id="head" style="width: 50px;height: 80px" src="~/File/Images/@path" />
+                <img class="img-responsive" name="head" id="head" style="margin-left:15%;width: 150px;height: 150px" src="/static/image/defaultImage.jpg" />
             </li>
             <li class="list-group-item"><a href="/user/appointment">预约挂号</a></li>
             <li class="list-group-item"><a href="/user/editInfo">修改信息</a></li>
@@ -60,9 +60,9 @@
     <div class="col-md-9 ">
         <form id="appointForm" action="/user/addAppointment" method="post">
             <input name="publicKey" id="publicKey" hidden>
-            <input name="hospitalID" id="hospitalID" >
-            <input name="deptID" id="deptID" >
-            <input name="DAY" id="DAY" >
+            <input name="hospitalID" id="hospitalID" hidden>
+            <input name="deptID" id="deptID" hidden>
+            <input name="DAY" id="DAY" hidden>
             <div>
                 <select id="hospitalName" name="hospitalName" class="form-control" style="width:180px;float: left;margin-left:15%">
                     <option value="null">选择医院</option>

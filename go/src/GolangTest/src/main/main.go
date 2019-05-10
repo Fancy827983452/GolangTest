@@ -58,8 +58,6 @@ func main() {
 		doctor.Post("/editInfoPost",controller.DoctorEditInfoPost)
 		doctor.Get("/editPwd",controller.DoctorEditPwd)//修改密码
 		doctor.Post("/editPwdPost",controller.DoctorEditPwdPost)
-		doctor.Get("/visitHistory",controller.VisitHistory)//查看当前医生访问过的病人历史记录
-		//doctor.Get("/patientDetails",controller.PatientDetails)	//查看病人详细信息
 		doctor.Get("/addCase/{appointmentId}",controller.AddCase)	//添加病例
 		doctor.Post("/addCase",controller.AddCasePost)	//添加病例
 		doctor.Get("/treatmentHistory",controller.TreatmentHistory)	//查看历史就诊记录

@@ -82,13 +82,6 @@ func SetAppointmentNum(ctx iris.Context){
 	ctx.View("doctor/DoctorSetAppointmentNumber.html")
 }
 
-func PatientDetails(ctx iris.Context){
-	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
-	currentDoctor:=session.Get("currentDoctor")
-	ctx.ViewData("currentDoctor",currentDoctor)
-	ctx.View("doctor/PatientDetails.html")
-}
-
 func DoctorEditInfo(ctx iris.Context){
 	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
 	currentDoctor:=session.Get("currentDoctor")
@@ -152,13 +145,6 @@ func DoctorEditPwdPost(ctx iris.Context)  {
 		}
 	}
 	ctx.HTML("<script>alert('"+msg+"');window.history.back(-1);</script>")
-}
-
-func VisitHistory(ctx iris.Context){
-	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
-	currentDoctor:=session.Get("currentDoctor")
-	ctx.ViewData("currentDoctor",currentDoctor)
-	ctx.View("doctor/VisitHistory.html")
 }
 
 func AddCase(ctx iris.Context){

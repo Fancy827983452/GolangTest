@@ -301,12 +301,19 @@ func Logout(ctx iris.Context) {
 		str:=currentDoctor.(string)
 		record:=strings.Split(str,",")[0]//取DoctorKey的key和value
 		value:=strings.Split(record,":")[1]//取value
-		//获取医生公钥
-		doctorKey:=value[1:len(value)-1]//去除前后的双引号
-		result, _ :=model.UpdateDoctorStatus(doctorKey,1)  //更改status为1（离线）
-		if result>0{
+		//判断当前的doctorStatus是否为1
+		doctorStatus:=session.Get("doctorStatus")
+		if doctorStatus.(int)==1 {
 			sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
 			ctx.HTML("<script>alert('登出成功！');window.location.href='/doctor/login';</script>")
+		}else {
+			//获取医生公钥
+			doctorKey:=value[1:len(value)-1]//去除前后的双引号
+			result, _ :=model.UpdateDoctorStatus(doctorKey,1)  //更改status为1（离线）
+			if result>0{
+				sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
+				ctx.HTML("<script>alert('登出成功！');window.location.href='/doctor/login';</script>")
+			}
 		}
 	} else {
 		sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
