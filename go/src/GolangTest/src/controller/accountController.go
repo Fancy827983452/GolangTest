@@ -7,16 +7,16 @@ import (
 	"encoding/hex"
 	"github.com/kataras/iris"
 	"strconv"
-	"strings"
+	"encoding/json"
 )
 
 //用户
 func Login(ctx iris.Context) {
-	ctx.View("Login.html")
+	ctx.View("user/UserLogin.html")
 }
 
 func Register(ctx iris.Context) {
-	ctx.View("Register.html")
+	ctx.View("user/UserRegister.html")
 }
 
 func LoginPost (ctx iris.Context) {
@@ -46,7 +46,7 @@ func LoginPost (ctx iris.Context) {
 		user.Location=string(algorithm.AEC_CRT_Crypt(location,[]byte(user.Ace_Key)))
 		session.Set("currentUser",util.ParseJson(user))
 		session.Set("AEC_KEY",user.Ace_Key)
-		ctx.HTML("<script>alert('"+msg.Message+"');window.location.href='user/editInfo';</script>")//URL传参
+		ctx.HTML("<script>alert('"+msg.Message+"');window.location.href='/user/editInfo';</script>")//URL传参
 	}
 }
 
@@ -108,8 +108,6 @@ func DoctorRegisterPost(ctx iris.Context){
 	doctor.IdNum=ctx.FormValue("idnumber")
 	doctor.PhoneNum=ctx.FormValue("telephone")
 	doctor.Password=ctx.FormValue("password")
-	doctor.Status=0;
-	doctor.Role=0;
 	doctor.Title, _ =strconv.Atoi(ctx.FormValue("title"))
 
 	//判断手机号是否被注册过
@@ -264,7 +262,7 @@ func HospitalRegisterPost(ctx iris.Context)  {
 
 //管理员
 func AdminLogin(ctx iris.Context)  {
-	ctx.View("admin/Login.html")
+	ctx.View("admin/UserLogin.html")
 }
 
 func AdminLoginPost(ctx iris.Context){
@@ -293,29 +291,24 @@ func AdminLoginPost(ctx iris.Context){
 }
 
 func Logout(ctx iris.Context) {
-	param:=ctx.Params().Get("param") //获取传递的参数
-	if len(param)>0 { //doctor
-		//更改status为1
-		session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
-		currentDoctor:=session.Get("currentDoctor")
-		str:=currentDoctor.(string)
-		record:=strings.Split(str,",")[0]//取DoctorKey的key和value
-		value:=strings.Split(record,":")[1]//取value
-		//判断当前的doctorStatus是否为1
-		doctorStatus:=session.Get("doctorStatus")
-		if doctorStatus.(int)==1 {
+	session:=sessionMgr.BeginSession(ctx.ResponseWriter(),ctx.Request())
+	currentDoctor:=session.Get("currentDoctor")
+	if currentDoctor!=nil { //不为空，表明当前登录的是医生
+		//判断当前的doctor的Status是否为1
+		ctx.ResponseWriter().Header().Set("content-type", "text/html")
+		doctor := model.Doctor{}
+		json.Unmarshal([]byte(currentDoctor.(string)), &doctor)
+		if doctor.Status==1 {
 			sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
-			ctx.HTML("<script>alert('登出成功！');window.location.href='/doctor/login';</script>")
+			ctx.HTML("<script>alert('登出成功！');window.location.href='login';</script>")
 		}else {
-			//获取医生公钥
-			doctorKey:=value[1:len(value)-1]//去除前后的双引号
-			result, _ :=model.UpdateDoctorStatus(doctorKey,1)  //更改status为1（离线）
+			result, _ :=model.UpdateDoctorStatus(doctor.DoctorKey,1)  //更改status为1（离线）
 			if result>0{
 				sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
-				ctx.HTML("<script>alert('登出成功！');window.location.href='/doctor/login';</script>")
+				ctx.HTML("<script>alert('登出成功！');window.location.href='login';</script>")
 			}
 		}
-	} else {
+	}else {
 		sessionMgr.Destroy(ctx.ResponseWriter(),ctx.Request())
 		ctx.HTML("<script>alert('登出成功！');window.location.href='login';</script>")
 	}

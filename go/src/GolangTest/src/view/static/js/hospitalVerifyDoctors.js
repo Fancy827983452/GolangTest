@@ -1,9 +1,9 @@
 //由于使用confirm弹窗确实用户操作，点击取消时会有页面跳转（？）
 //onbeforeunload在即将离开当前页面（刷新或关闭）时触发
 //由用户进行判断是否跳转页面
-window.onbeforeunload=function(){
-    return '确定要离开吗？'
-}
+// window.onbeforeunload=function(){
+//     return '确定要离开吗？'
+// }
 
 function loading() {
     var jsonTxt=document.getElementById("formValue").innerText;

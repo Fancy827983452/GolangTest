@@ -53,12 +53,21 @@ func QueryAppoints(hospitalId string,deptId string,date string,doctorKey string)
 }
 
 //获取指定医院科室指定日期的当前挂号数量
-func GetCurrentAppointedNum(hospitalId string,deptId string,date string) (int,error) {
+func GetCurrentAppointedNum(hospitalId int,deptId int,date string) (int,error) {
 	sql:="select ifnull(count(*),0) as count from appointment where department_id=? and medical_institution_id=? and appointDate=?"
 	var count int
-	err := db.QueryRow(sql,hospitalId,deptId,date).Scan(&count)
+	err := db.QueryRow(sql,deptId,hospitalId,date).Scan(&count)
 	util.CheckErr(err)
 	return count,err
+}
+
+//判断该用户是否已经预约过
+func CheckUserAppointedOrNot(hospitalId int,deptId int,date string,publicKey string,doctorKey string) (bool,error) {
+	sql:="select ifnull(count(*),0) as count from appointment where department_id=? and medical_institution_id=? and appointDate=? and patient_key=? and doctor_key=?"
+	var count int
+	err := db.QueryRow(sql,deptId,hospitalId,date,publicKey,doctorKey).Scan(&count)
+	util.CheckErr(err)
+	return count>0,err
 }
 
 //插入记录
@@ -72,7 +81,7 @@ func AddAppointment(item Appointment) (bool, error){
 }
 
 //读取数据库中今天该医院、科室、医生、status=0（未看诊）的预约记录
-func DoctorViewAppointments(hospitalId string,deptId string,doctorKey string,status int,date string) *Appointments {
+func DoctorViewAppointments(hospitalId int,deptId int,doctorKey string,status int,date string) *Appointments {
 	var result Appointments
 	result.Items = []*Appointment{}
 	query := "select id,number,time,appointDate,appointment.department_id,department_name," +

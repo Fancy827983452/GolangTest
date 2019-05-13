@@ -40,7 +40,7 @@
             <form action="" method="post" id="userForm" name="userForm">
                 <div>
                     <select id="select" name="select" class="form-control" style="width:80px;float: left;margin-left: 35%">
-                        <option value="name">姓名</option>
+                        <option value="name" selected>姓名</option>
                         <option value="gender">性别</option>
                         <option value="department_name">科室</option>
                         <option value="title">职称</option>
@@ -79,9 +79,9 @@
                 </div>
 
                 <div style="margin-top: 50px;">
-                    <button class="btn btn-primary" style="margin-left: 50px;"  onmousedown="return checkSelected()" onmouseup="return confirmRole()">设为科室管理员</button>
-                    <button class="btn btn-primary" style="margin-left: 50px;" onmousedown="return checkSelected()" onmouseup="return confirmCancel()">取消科室管理员</button>
-                    <button class="btn btn-primary" style="margin-left: 50px;" onmousedown="return checkSelected()" onmouseup="return confirmWithdraw()">注销账户</button>
+                    <a class="btn btn-primary" style="margin-left: 50px;"  onmousedown="return checkSelected()" onmouseup="return confirmRole()">设为科室管理员</a>
+                    <a class="btn btn-primary" style="margin-left: 50px;" onmousedown="return checkSelected()" onmouseup="return confirmCancel()">取消科室管理员</a>
+                    <a class="btn btn-primary" style="margin-left: 50px;" onmousedown="return checkSelected()" onmouseup="return confirmWithdraw()">注销账户</a>
                 </div>
             </form>
         </div>

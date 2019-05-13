@@ -6,9 +6,7 @@ window.onload=function () {
     document.getElementById("doctorCenter1").innerText=obj.Name;
 
     if(url.indexOf("main")!=-1) { //如果处在预约看诊的页面
-        //获取当前登录的医生的status
-        var doctorStatus=document.getElementById("doctorStatus").innerText;
-        if(doctorStatus=="1" || doctorStatus=="4")
+        if(obj.Status==1 || obj.Status==4)
         {
             //显示开始工作按钮
             var btn1=document.getElementById("startBtn");
@@ -16,7 +14,7 @@ window.onload=function () {
             btn1.style.display="inline";
             btn2.style.display="none";
         }
-        else if(doctorStatus=="2" || doctorStatus=="3"){
+        else if(obj.Status==2 || obj.Status==3){
             var btn1=document.getElementById("startBtn");
             var btn2=document.getElementById("SuspendBtn");
             btn1.style.display="none";
@@ -99,17 +97,6 @@ window.onload=function () {
             a.innerText = "科室管理";
             li.appendChild(a);
             ul.appendChild(li);
-        }
-        if(document.getElementById("doctorMgrUL")){
-            var li1=document.getElementById("li1");
-            var li2=document.getElementById("li2");
-            var li3=document.getElementById("li3");
-            if(url.indexOf("departmentManagement")!=-1)
-                li1.className="active";
-            else if(url.indexOf("viewArrangement")!=-1)
-                li2.className="active";
-            else if(url.indexOf("setAppointmentNum")!=-1)
-                li3.className="active";
         }
     }
 }

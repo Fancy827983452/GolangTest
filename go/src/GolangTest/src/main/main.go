@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/kataras/iris"
 	"controller"
-	"model"
 )
 
 func main() {
@@ -13,24 +12,14 @@ func main() {
 	// Reload 方法设置为 true 表示开启开发者模式 将会每一次请求都重新加载 views 文件下的所有模板
 	app.RegisterView(iris.HTML("./src/view", ".html").Reload(true))
 
-	app.Post("/decode", func(ctx iris.Context) {
-		var user model.User
-		// 请求参数格式化  请求参数是json类型转化成 User类型
-		// 比如 post 参数 {username:'xxxx'} 转成 User 类型
-		ctx.ReadJSON(&user)//把 json 类型请求参数 转成结构体
-		//ctx.Writef("%s %s is %d years old and comes from %s", user.Firstname, user.Lastname, user.Age, user.City)
-	})
-
-	app.Get("/", controller.Login)
-	app.Get("/login", controller.Login)
-	app.Post("/loginPost", controller.LoginPost)
-	app.Get("/register", controller.Register)
-	app.Post("/registerPost", controller.RegisterPost)
-	app.Get("/logout", controller.Logout)
-
 	//app.Party 定义路由组,把相同路由组的放在一个区块(第一个参数设置路由相同的前缀,第二个参数为中间件)
 	user:=app.Party("user")
 	{
+		user.Get("/", controller.Login)
+		user.Get("/login", controller.Login)
+		user.Post("/loginPost", controller.LoginPost)
+		user.Get("/register", controller.Register)
+		user.Post("/registerPost", controller.RegisterPost)
 		user.Get("/editInfo",controller.EditUserInfo)
 		user.Post("/editInfoPost",controller.EditUserInfoPost)
 		user.Get("/editPassword",controller.EditUserPwd)
@@ -43,6 +32,7 @@ func main() {
 		user.Get("/appointment/{param}",controller.UserAppointment)
 		user.Post("/appointment",controller.UserAppointmentSearchPost)
 		user.Post("/addAppointment",controller.UserAddAppointment)
+		user.Get("/logout", controller.Logout)
 	}
 
 	doctor:=app.Party("doctor")
@@ -63,10 +53,11 @@ func main() {
 		doctor.Get("/treatmentHistory",controller.TreatmentHistory)	//查看历史就诊记录
 		doctor.Post("/treatmentHistory",controller.TreatmentHistorySearch)
 		doctor.Get("/departmentManagement",controller.DepartmentManagement)//科室管理员
+		doctor.Post("/setArrangement",controller.SetDeptArrangement)
 		doctor.Get("/viewArrangement",controller.ViewDepartmentArrangement)
-		doctor.Get("/setAppointmentNum",controller.SetAppointmentNum)
-
-		doctor.Get("/logout/{param}", controller.Logout)
+		doctor.Get("/setAppointmentNum",controller.ViewAppointmentNum)
+		doctor.Post("/setAppointmentNum",controller.SetAppointmentNum)
+		doctor.Get("/logout", controller.Logout)
 	}
 
 	hospital:=app.Party("hospital")
@@ -81,9 +72,9 @@ func main() {
 		hospital.Post("/verifyDoctor/fail",controller.FailDoctor)
 		hospital.Post("/verifyDoctor/withdraw",controller.WithdrawDoctor)
 		hospital.Get("/viewDoctors",controller.ViewDoctors)//查看所有医生
+		hospital.Post("/viewDoctors/{param}",controller.SearchDoctor) //搜索医生
 		hospital.Post("/setAdmin",controller.SetDoctorAdmin)
 		hospital.Post("/cancelAdmin",controller.CancelDoctorAdmin)
-		hospital.Post("/searchDoctor/{param}",controller.SearchDoctor)
 		hospital.Get("/departmentManagement",controller.HospitalDepartmentManagement)//科室管理
 		hospital.Post("/departmentAddPost", controller.DepartmentAddPost)
 		hospital.Post("/departmentEditInfoPost", controller.DepartmentEditInfoPost)

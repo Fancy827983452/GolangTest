@@ -5,23 +5,23 @@ import (
 )
 
 type Doctor struct {
-	DoctorKey 		string 	`json:"DoctorKey\"`	//公钥
-	Name      		string 	`json:"Name\"`   		//姓名
-	Gender    		int   	`json:"Gender\"`		//性别
-	BirthDate 		string 	`json:"BirthDate\"`	//出生日期
-	IdNum     		string 	`json:"IdNum\"`		//身份证号
-	PhoneNum  		string 	`json:"PhoneNum\"`		//电话号码
-	Password		string	`json:"Password\"`		//密码
-	HospitalId		int		`json:"HospitalId\"`	//就职医院的代码
-	HospitalName	string	`json:"HospitalName\"`
-	DeptId			int		`json:"DeptId\"`		//科室代码
-	DeptName		string	`json:"DeptName\"`
-	Title     		int    	`json:"Title\"`		//职称(0：初级职称；1：中级职称；2：副高级职称；3：高级职称)
-	Status    		int 	`json:"Status\"`		//状态（-1：审核不通过；0：待审核；1：离线；2：空闲；3：忙碌；4：挂起）
-	Role      		int     `json:"Role\"`			//角色（0：普通医生；1：管理员）
-	Aec_Key   		string  `json:"Aec_Key\"`		//信息加密的对称加密秘钥
-	Addr 	  		string  `json:"Addr\"`			//记录的地址
-	Arrange   		int     `json:"Arrange\"`		//排班时间（0：周日；1：周一；……；6：周六）
+	DoctorKey 		string 		//公钥
+	Name      		string 	  	//姓名
+	Gender    		int   		//性别
+	BirthDate 		string 		//出生日期
+	IdNum     		string 		//身份证号
+	PhoneNum  		string 		//电话号码
+	Password		string		//密码
+	HospitalId		int			//就职医院的代码
+	HospitalName	string
+	DeptId			int			//科室代码
+	DeptName		string
+	Title     		int    		//职称(0：初级职称/医士、医师、住院医师；1：中级职称/主治医师；2：副高级职称/副主任医师；3：高级职称/主任医师)
+	Status    		int 		//状态（-1：审核不通过；0：待审核；1：离线；2：空闲；3：忙碌；4：挂起）
+	Role      		int     	//角色（0：普通医生；1：管理员）
+	Aec_Key   		string  	//信息加密的对称加密秘钥
+	Addr 	  		string  	//记录的地址
+	Arrange   		int     	//排班时间（0：周日；1：周一；……；6：周六）
 }
 
 type Doctors struct {
@@ -30,8 +30,8 @@ type Doctors struct {
 
 func DoctorRegister(doctor Doctor) (bool, error){
 	sql :="insert into tbl_doctor(doctor_key,Name,birthdate,gender,id_number,phone_number,medical_institution_id,department_id," +
-		"password,aec_key,addr,title,status,role) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-	res, err := db.Exec(sql,doctor.DoctorKey,doctor.Name,doctor.BirthDate,doctor.Gender,doctor.IdNum,doctor.PhoneNum,doctor.HospitalId,doctor.DeptId,doctor.Password,doctor.Aec_Key,doctor.Addr,doctor.Title,doctor.Status,doctor.Role)
+		"password,aec_key,addr,title) values(?,?,?,?,?,?,?,?,?,?,?,?)"
+	res, err := db.Exec(sql,doctor.DoctorKey,doctor.Name,doctor.BirthDate,doctor.Gender,doctor.IdNum,doctor.PhoneNum,doctor.HospitalId,doctor.DeptId,doctor.Password,doctor.Aec_Key,doctor.Addr,doctor.Title)
 	util.CheckErr(err)
 	result, err := res.RowsAffected()
 	util.CheckErr(err)
@@ -179,35 +179,17 @@ func UpdateDoctorRole(id string,role int) (int64,error){
 }
 
 //根据医院代码和科室代码读取所有在职医生
-func GetDeptValidDoctors(hospitalId string,deptId string) *Doctors {
+func GetDeptValidDoctors(hospitalId int,deptId int) *Doctors {
 	var result Doctors
 	result.Items = []*Doctor{}
-	query := "select doctor_key,name,birthdate,gender,id_number,phone_number,department_name,title,aec_key,status,role from tbl_doctor " +
+	query := "select doctor_key,name,birthdate,gender,id_number,phone_number,department_name,title,aec_key,status,role,arrange from tbl_doctor " +
 		"join tbl_medical_institution_department on tbl_medical_institution_department.department_id=tbl_doctor.department_id " +
-		"where tbl_doctor.medical_institution_id=? and tbl_doctor.department_id=? and (status=1 or status=2 or status=3 or status=4)"
+		"where tbl_doctor.medical_institution_id=? and tbl_doctor.department_id=? and (status=1 or status=2 or status=3 or status=4) order by arrange"
 	rows, err := db.Query(query,hospitalId,deptId)
 	util.CheckErr(err)
 	for rows.Next() {
 		item := Doctor{}
-		err = rows.Scan(&item.DoctorKey,&item.Name,&item.BirthDate,&item.Gender,&item.IdNum,&item.PhoneNum,&item.DeptName,&item.Title,&item.Aec_Key,&item.Status,&item.Role)
-		util.CheckErr(err)
-		result.Items = append(result.Items, &item)
-	}
-	return &result
-}
-
-//根据医院代码和科室代码读取当天排班的在职医生
-func GetDeptArrangeDoctors(hospitalId string,deptId string,arrange string) *Doctors {
-	var result Doctors
-	result.Items = []*Doctor{}
-	query := "select doctor_key,name,birthdate,gender,id_number,phone_number,department_name,title,aec_key,status,role from tbl_doctor " +
-		"join tbl_medical_institution_department on tbl_medical_institution_department.department_id=tbl_doctor.department_id " +
-		"where tbl_doctor.medical_institution_id=? and tbl_doctor.department_id=? and arrange=? and (status=1 or status=2 or status=3 or status=4)"
-	rows, err := db.Query(query,hospitalId,deptId,arrange)
-	util.CheckErr(err)
-	for rows.Next() {
-		item := Doctor{}
-		err = rows.Scan(&item.DoctorKey,&item.Name,&item.BirthDate,&item.Gender,&item.IdNum,&item.PhoneNum,&item.DeptName,&item.Title,&item.Aec_Key,&item.Status,&item.Role)
+		err = rows.Scan(&item.DoctorKey,&item.Name,&item.BirthDate,&item.Gender,&item.IdNum,&item.PhoneNum,&item.DeptName,&item.Title,&item.Aec_Key,&item.Status,&item.Role,&item.Arrange)
 		util.CheckErr(err)
 		result.Items = append(result.Items, &item)
 	}
@@ -215,7 +197,7 @@ func GetDeptArrangeDoctors(hospitalId string,deptId string,arrange string) *Doct
 }
 
 //获取指定医院科室的周几上班的医生信息
-func GetArrangedDoctor(hospitalId string,deptId string,weekday int) *Doctors {
+func GetArrangedDoctor(hospitalId int,deptId int,weekday int) *Doctors {
 	var result Doctors
 	result.Items = []*Doctor{}
 	query := "select doctor_key,name,birthdate,gender,id_number,phone_number,department_name,title,aec_key,status from tbl_doctor " +
@@ -231,4 +213,13 @@ func GetArrangedDoctor(hospitalId string,deptId string,weekday int) *Doctors {
 		result.Items = append(result.Items, &item)
 	}
 	return &result
+}
+
+//设置医生排班时间
+func UpdateDoctorArrange(id string,arrange int) (int64,error){
+	sql :="update tbl_doctor set arrange=? where doctor_key=?"
+	res, err := db.Exec(sql,arrange,id)
+	util.CheckErr(err)
+	result, err := res.RowsAffected()
+	return result, nil
 }

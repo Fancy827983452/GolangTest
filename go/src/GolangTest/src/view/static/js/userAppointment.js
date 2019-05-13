@@ -10,7 +10,6 @@ window.onload=function () {
     setUrl();
     passValue();
     setSelectAfterPost();
-    // setDoctor();
     setHiddenField();
 }
 
@@ -192,7 +191,8 @@ function passValue() {
                     btn.innerText = "预约";
                     btn.setAttribute("class", "btn btn-primary");
                     btn.setAttribute("type", "submit");
-                    tr.appendChild(btn);
+                    td2.appendChild(btn)
+                    tr.appendChild(td2);
                 }
             }
         }

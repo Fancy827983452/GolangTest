@@ -43,8 +43,8 @@ window.onload=function () {
     }
 
     //如果身份是科室管理员
-    if(obj.Role==1){
-        if(document.getElementById("userfunction")) {
+    if(obj.Role==1) {
+        if (document.getElementById("userfunction")) { //左侧菜单
             var ul = document.getElementById("userfunction");
             var li = document.createElement("li");
             li.className = "list-group-item";
@@ -54,21 +54,196 @@ window.onload=function () {
             li.appendChild(a);
             ul.appendChild(li);
         }
-        if(document.getElementById("doctorMgrUL")){
-            var li1=document.getElementById("li1");
-            var li2=document.getElementById("li2");
-            var li3=document.getElementById("li3");
-            if(url.indexOf("departmentManagement")!=-1)
-                li1.className="active";
-            else if(url.indexOf("viewArrangement")!=-1)
-                li2.className="active";
-            else if(url.indexOf("setAppointmentNum")!=-1)
+        if (document.getElementById("doctorMgrUL")) {  //右侧上方导航菜单
+            var li1 = document.getElementById("li1");
+            var li2 = document.getElementById("li2");
+            var li3 = document.getElementById("li3");
+            if (url.indexOf("departmentManagement") != -1) { //处于排班安排页面
+                li1.className = "active";
+                //显示本科室所有在职医生
+                var doctorsTxt = document.getElementById("doctors").innerText;
+                if (doctorsTxt) {
+                    var doctors = JSON.parse(doctorsTxt).Items;
+                    document.getElementById("deptName").innerText = doctors[0].DeptName;
+                    var tbody = document.getElementById("tbody");
+                    for (var i in doctors) {
+                        var tr = document.createElement("tr");
+                        tbody.appendChild(tr);
+                        var td = document.createElement("td");
+                        var check = document.createElement("input");
+                        check.setAttribute("type", "checkbox");
+                        check.setAttribute("name", "check");
+                        check.setAttribute("id", "check" + i);
+                        check.setAttribute("type", "checkbox");
+                        check.setAttribute("value", doctors[i].DoctorKey);
+                        td.appendChild(check);
+                        tr.appendChild(td);
+                        var td1 = document.createElement("td");
+                        td1.innerText = doctors[i].Name;
+                        tr.appendChild(td1);
+                        var td2 = document.createElement("td");
+                        if (doctors[i].Gender == 0)
+                            td2.innerText = "男";
+                        else
+                            td2.innerText = "女";
+                        tr.appendChild(td2);
+                        var td3 = document.createElement("td");
+                        td3.innerText = jsGetAge(doctors[i].BirthDate);
+                        tr.appendChild(td3);
+                        var td4 = document.createElement("td");
+                        switch (doctors[i].Title) {
+                            case 0:
+                                td4.innerText = "医士、医师、住院医师";
+                                break;
+                            case 1:
+                                td4.innerText = "主治医师";
+                                break;
+                            case 2:
+                                td4.innerText = "副主任医师";
+                                break;
+                            case 3:
+                                td4.innerText = "主任医师";
+                                break;
+                        }
+                        tr.appendChild(td4);
+                        var td5 = document.createElement("td");
+                        if (doctors[i].Role == 1)
+                            td5.innerText = "管理员";
+                        tr.appendChild(td5);
+                        var td6 = document.createElement("td");
+                        switch (doctors[i].Arrange) {
+                            case 0:
+                                td6.innerText = "星期日";
+                                break;
+                            case 1:
+                                td6.innerText = "星期一";
+                                break;
+                            case 2:
+                                td6.innerText = "星期二";
+                                break;
+                            case 3:
+                                td6.innerText = "星期三";
+                                break;
+                            case 4:
+                                td6.innerText = "星期四";
+                                break;
+                            case 5:
+                                td6.innerText = "星期五";
+                                break;
+                            case 6:
+                                td6.innerText = "星期六";
+                                break;
+                            default:
+                                td6.innerText = "未安排";
+                                break;
+                        }
+                        tr.appendChild(td6);
+                    }
+                }
+            }
+            else if (url.indexOf("viewArrangement") != -1) {  //查看排班表页面
+                li2.className = "active";
+                //显示本科室所有在职医生
+                var doctorsTxt = document.getElementById("doctors").innerText;
+                if (doctorsTxt) {
+                    var doctors = JSON.parse(doctorsTxt).Items;
+                    var tbody = document.getElementById("tbody");
+                    for (var i in doctors) {
+                        //判断是周几
+                        var td1 = document.getElementById("td1");
+                        var td2 = document.getElementById("td2");
+                        var td3 = document.getElementById("td3");
+                        var td4 = document.getElementById("td4");
+                        var td5 = document.getElementById("td5");
+                        var td6 = document.getElementById("td6");
+                        var td7 = document.getElementById("td7");
+                        var div = document.createElement("div");
+                        div.innerText = doctors[i].Name;
+                        div.style.height = "30px";
+                        div.style.marginTop = "5%";
+                        // div.style.border= "thin solid lightgray";
+                        switch (doctors[i].Arrange) {
+                            case 1:
+                                td1.appendChild(div);
+                                break;
+                            case 2:
+                                td2.appendChild(div);
+                                break;
+                            case 3:
+                                td3.appendChild(div);
+                                break;
+                            case 4:
+                                td4.appendChild(div);
+                                break;
+                            case 5:
+                                td5.appendChild(div);
+                                break;
+                            case 6:
+                                td6.appendChild(div);
+                                break;
+                            case 0:
+                                td7.appendChild(div);
+                                break;
+                        }
+                    }
+                }
+            }
+            else if (url.indexOf("setAppointmentNum") != -1) {  //设置挂号数量页面
                 li3.className="active";
+            }
         }
     }
 }
 
-//bootstrapValidator
+// 点击行选中该行复选框
+$("#table").on("click", "tr", function () {
+    var input = $(this).find("input");
+    if (!$(input).prop("checked")) {
+        $(input).prop("checked", true);
+    } else {
+        $(input).prop("checked", false);
+    }
+});
+
+// 多选框 防止事件冒泡
+$("#table").on("click", "input", function (event) {
+    event.stopImmediatePropagation();
+});
+
+// 点击后全选所有复选框
+$("input[name='all_check']").change(function () {
+    if (this.checked) {
+        $("input[name='check']:checkbox").each(function () {
+            this.checked = true;
+        })
+    } else {
+        $("input[name='check']:checkbox").each(function () {
+            this.checked = false;
+        })
+    }
+});
+
+//判断是否选择记录
+function checkSelected() {
+
+    var check=document.getElementsByName("check");
+    var flag=false;
+    var count=0;
+    for(var c=0;c<check.length;c++) {
+        if (check[c].checked == true) {
+            count++;
+        }
+    }
+    if(count>0)
+        flag = true;
+    else {
+        alert("请至少选择一条记录！");
+        window.history.back(-1);
+    }
+    return true;
+}
+
+//bootstrap验证器
 $(document).ready(function () {
     $("#doctorEditInfoForm").bootstrapValidator({
         message: '通用的验证失败消息',
@@ -220,4 +395,23 @@ function check() {
     }
     else
         return true;
+}
+
+//安排排班
+function setArrange() {
+    var str="";
+    $("input[name='check']:checkbox:checked").each(function(){
+        str+=$(this).val()+",";
+    })
+    $("#selectedItem").val(str);
+    document.getElementById("selectedItem").value=str;
+    var check=document.getElementsByName("check");
+    for(var c=0;c<check.length;c++){
+        if(check[c].checked==true){
+            var arrangeForm=document.getElementById("arrangeForm");
+            arrangeForm.action="/doctor/setArrangement";
+            arrangeForm.method="post";
+            arrangeForm.submit();
+        }
+    }
 }

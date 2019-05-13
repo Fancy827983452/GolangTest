@@ -190,6 +190,7 @@ func DepartmentEditInfoPost(ctx iris.Context) {
 	d.Name = ctx.FormValue("DepartmentName2")
 	d.Info = ctx.FormValue("detail2")
 	d.DeptId, _ = strconv.Atoi(ctx.FormValue("DepartmentId"))
+	d.HospitalId=hospital.HospitalId
 
 	result, _ := model.UpdateDepartmentInfo(d); //插入数据库，返回操作结果（true或false）
 	if result > 0 {

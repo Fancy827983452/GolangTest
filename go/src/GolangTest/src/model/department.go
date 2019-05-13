@@ -56,18 +56,27 @@ func DepartmentAdd(department Department) (bool, error) {
 
 //更新科室信息
 func UpdateDepartmentInfo(department Department)(int64, error){
-	sql :="update tbl_medical_institution_department set department_name=?,info=? where department_id=?"
-	res, err := db.Exec(sql,department.Name,department.Info,department.DeptId)
+	sql :="update tbl_medical_institution_department set department_name=?,info=? where department_id=? and medical_institution_id=?"
+	res, err := db.Exec(sql,department.Name,department.Info,department.DeptId,department.HospitalId)
 	util.CheckErr(err)
 	result, err := res.RowsAffected()
 	return result, nil
 }
 
 //根据医院id和科室id，获取该科室设置的挂号量(max)
-func GetSettedAppointNum(hospitalId string,deptId string) (int,error) {
+func GetSettedAppointNum(hospitalId int,deptId int) (int,error) {
 	sql:="select num from tbl_medical_institution_department where medical_institution_id=? and department_id=?"
 	var num int
 	err := db.QueryRow(sql,hospitalId,deptId).Scan(&num)
 	util.CheckErr(err)
 	return num,err
+}
+
+//根据医院id和科室id，更新该科室设置的挂号量(max)
+func UpdateSettedAppointNum(num int,hospitalId int,deptId int) (int64,error) {
+	sql:="update tbl_medical_institution_department set num=? where medical_institution_id=? and department_id=?"
+	res, err := db.Exec(sql,num,hospitalId,deptId)
+	util.CheckErr(err)
+	result, err := res.RowsAffected()
+	return result, nil
 }

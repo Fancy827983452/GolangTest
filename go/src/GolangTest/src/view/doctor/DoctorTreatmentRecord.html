@@ -19,7 +19,7 @@
                 <div class="col-md-5 col-md-offset-4">
                     <ul class="nav navbar-nav"  style="float:right">
                         <li><a id="doctorCenter"><span class="glyphicon glyphicon-user" id="doctorCenter1"></span> </a></li>
-                        <li><a href="/doctor/logout/1" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+                        <li><a href="/doctor/logout" onclick="if(confirm('确定登出吗？')==false)return false;"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
                     </ul>
                 </div>
 
@@ -85,11 +85,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="illdescribe">症状描述</label>
-                                    <textarea class="form-control" ID="modal_symptom" name="modal_symptom" rows="4"></textarea>
+                                    <textarea class="form-control" ID="modal_symptom" name="modal_symptom" rows="4" readonly></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="illdetail">详细诊治方案</label>
-                                    <textarea class="form-control" ID="modal_illdetail" name="modal_illdetail" rows="4"></textarea>
+                                    <textarea class="form-control" ID="modal_illdetail" name="modal_illdetail" rows="4" readonly></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="illname">诊断结果：</label>
